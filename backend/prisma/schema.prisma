@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum UserRole {
+  ADMIN
+  GMC_OFFICER
+  OPERATOR
+  TICKET_COLLECTOR
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum OperatorStatus {
+  ACTIVE
+  INACTIVE
+  BLACKLISTED
+}
+
+enum AreaStatus {
+  ACTIVE
+  INACTIVE
+  UNDER_MAINTENANCE
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  username     String     @unique @db.VarChar(50)
+  passwordHash String     @map("password_hash")
+  name         String
+  contact      String     @db.VarChar(15)
+  email        String?    @unique
+  role         UserRole
+  status       UserStatus @default(ACTIVE)
+  lastLoginAt  DateTime?  @map("last_login_at")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  operatorId    Int?             @map("operator_id")
+  operator      ParkingOperator? @relation(fields: [operatorId], references: [id])
+
+  @@map("users")
+}
+
+model ParkingOperator {
+  id             Int            @id @default(autoincrement())
+  name           String
+  contactPerson  String?        @map("contact_person")
+  contact        String         @db.VarChar(15)
+  email          String?
+  address        String?        @db.Text
+  status         OperatorStatus @default(ACTIVE)
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  users        User[]
+  parkingAreas ParkingArea[]
+
+  @@map("parking_operators")
+}
+
+model ParkingArea {
+  id                  Int        @id @default(autoincrement())
+  code                String     @unique
+  name                String
+  authority           String     @default("Guwahati Municipal Corporation")
+  workOrderNo         String     @map("work_order_no")
+  tenureStart         DateTime   @map("tenure_start") @db.Date
+  tenureEnd           DateTime   @map("tenure_end") @db.Date
+  areaSqft            Int        @map("area_sqft")
+  slotValidity        Int        @map("slot_validity_minutes")
+  latitude            Decimal    @db.Decimal(9, 6)
+  longitude           Decimal    @db.Decimal(9, 6)
+  totalCapacity       Int        @map("total_capacity")
+  ward                String?
+  address             String?    @db.Text
+  openTime            DateTime?  @map("open_time") @db.Time(0)
+  closeTime           DateTime?  @map("close_time") @db.Time(0)
+  status              AreaStatus @default(ACTIVE)
+  createdAt           DateTime   @default(now()) @map("created_at")
+  updatedAt           DateTime   @updatedAt @map("updated_at")
+
+  operatorId        Int             @map("operator_id")
+  operator          ParkingOperator @relation(fields: [operatorId], references: [id])
+
+  @@map("parking_areas")
+}
