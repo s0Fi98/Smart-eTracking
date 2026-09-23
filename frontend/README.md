@@ -9,6 +9,11 @@ npm run dev
 
 Open http://localhost:3000.
 
+`127.0.0.1` is also allowed to access development resources. Restart the dev
+server after changing `next.config.mjs`. Static export is enabled only outside
+development to avoid the dev server's export-path check for encoded lot IDs;
+production builds still generate every registered lot page.
+
 ## Build static files
 
 From the `frontend` directory:
