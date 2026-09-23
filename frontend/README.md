@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Smart-eTracking frontend
 
-## Getting Started
-
-First, run the development server:
+## Development
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Build static files
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+From the `frontend` directory:
 
-## Learn More
+```bash
+npm ci
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+The deployable files are generated in **`frontend/out/`**, including `index.html`,
+`404.html`, `_next/`, public images, and `lot/<siteId>/index.html` for each site in
+`lib/mock-data.js`. Upload the entire contents of `out/` to your server's document
+root (for example, `public_html/` on shared hosting). Keep the directory structure
+and filenames intact, including spaces in lot directory names.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This configuration assumes hosting at the domain root, such as
+`https://parking.example.com/`. It does not configure deployment under a subfolder.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Static export is enabled in `next.config.mjs`. Images are served as static assets,
+and trailing slashes give each route its own directory and `index.html`.
+No Next.js process is needed on the hosting server. `npm start` (`next start`)
+is for server builds and must not be used to serve this static export.
 
-## Deploy on Vercel
+To preview with Python 3 installed:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+python3 -m http.server 3000 --directory out
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open http://localhost:3000 and test a lot link directly as well as by clicking
+Proceed. Use HTTP rather than opening the HTML files using `file://`.
+
+### Nginx example
+
+After uploading `out/` contents into `/var/www/smart-etracking`:
+
+```nginx
+server {
+    listen 80;
+    server_name parking.example.com;
+    root /var/www/smart-etracking;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+}
+```
+
+Replace the domain and document root with your server values. Apache/shared
+hosting should also serve directory `index.html` files; do not rewrite every
+request to the home page.
+
+### Rebuilding and troubleshooting
+
+- Lot pages are generated from `SITES_REGISTRY` at build time. Rebuild and upload
+  the export whenever you change site data or add a location. Unknown IDs return
+  404.
+- The layout uses `next/font/google`, so the build machine needs access to Google
+  Fonts. Font files are included in the build for hosting.
+- If a restricted build environment prevents Turbopack from binding its local
+  worker port, use `npm run build -- --webpack`. This also generates `out/` and
+  was used to verify the static export.
+- Open the deployed domain before printing/downloading QR cards: the QR target
+  uses the current browser origin.
+- This exports only the frontend. Any backend service needs separate deployment.
+
+See the [Next.js static export guide](https://nextjs.org/docs/app/guides/static-exports).

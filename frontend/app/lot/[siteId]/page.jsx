@@ -3,6 +3,8 @@ import { SITES_REGISTRY } from "../../../lib/mock-data";
 import { notFound } from "next/navigation";
 import LotClient from "../../../components/LotClient";
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return Object.keys(SITES_REGISTRY).map((id) => ({
     siteId: id,
