@@ -21,6 +21,9 @@ export default function LotClient({ site }) {
   const [durationText, setDurationText] = useState("");
   const [exitCleared, setExitCleared] = useState(false);
 
+  // Dynamic Work Order Document Path
+  const workOrderUrl = site.workOrderPdf || "/image/Adobe Scan 16 Sept 2026.pdf";
+
   // Action: Handle Entry Check-in
   const handleCheckIn = (e) => {
     e.preventDefault();
@@ -153,11 +156,11 @@ export default function LotClient({ site }) {
               <form onSubmit={handleCheckIn} className="space-y-4">
                 {/* 2-Column Site Metadata Matrix */}
                 <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 space-y-2 text-xs">
-                  {/* Lessee Name Row */}
+                  {/* Lessee Name */}
                   <div className="flex justify-between items-center pb-1.5 border-b border-slate-200">
                     <span className="text-slate-400 text-[11px]">Lessee Name</span>
                     <strong className="text-slate-800 text-right truncate max-w-[180px]">
-                      {site.lesseeName || site.leasedTo || site.ticketCollector || "M/S Kalita Enterprise"}
+                      {site.lesseeName || site.leasedTo || site.ticketCollector || "Sri Manab Haloi"}
                     </strong>
                   </div>
 
@@ -239,8 +242,9 @@ export default function LotClient({ site }) {
                   RECORD ENTRY (NO CHARGE)
                 </button>
 
+                {/* Dynamic Work Order & Tariff Details Button */}
                 <Link
-                  href="/image/Adobe Scan 16 Sept 2026.pdf"
+                  href={workOrderUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 active:scale-[0.98] text-slate-700 text-xs font-bold py-3 rounded-2xl border border-slate-200 shadow-xs transition duration-150"
