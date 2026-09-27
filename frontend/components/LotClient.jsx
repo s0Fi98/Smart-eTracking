@@ -91,7 +91,7 @@ export default function LotClient({ site }) {
     <div className="min-h-screen bg-slate-900 flex justify-center items-center p-3 sm:p-6 font-sans">
       <div className="w-full max-w-sm bg-white rounded-[28px] shadow-2xl border border-slate-200 overflow-hidden flex flex-col">
         {/* Verification Header with GMC Emblem */}
-        <header className="bg-gradient-to-b from-emerald-800 to-emerald-900 text-white pt-6 pb-5 px-4 text-center relative">
+        <header className="bg-linear-to-b from-emerald-800 to-emerald-900 text-white pt-6 pb-5 px-4 text-center relative">
           <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full border border-white/20 p-1.5 mx-auto flex items-center justify-center shadow-md mb-2.5">
             <Image
               src="/image/Guwahati_Municipal_Corporation_logo.svg.png"
@@ -239,7 +239,7 @@ export default function LotClient({ site }) {
                   type="submit"
                   className="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-700/20 transition duration-150"
                 >
-                  RECORD ENTRY (NO CHARGE)
+                  Proceed...
                 </button>
 
                 {/* Dynamic Work Order & Tariff Details Button */}

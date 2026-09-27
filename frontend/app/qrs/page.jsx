@@ -1,12 +1,11 @@
-// app/page.js
 "use client";
-
+import React from "react";
 import { useEffect, useState } from "react";
-import SiteQRGenerator from "../components/SiteQRGenerator";
-import { SITES_REGISTRY } from "../lib/mock-data";
+import SiteQRGenerator from "../../components/SiteQRGenerator";
+import { SITES_REGISTRY } from "../../lib/mock-data";
 import Image from "next/image";
 
-export default function HomePage() {
+const page = () => {
   const [origin, setOrigin] = useState("");
   const [search, setSearch] = useState("");
   const sites = Object.values(SITES_REGISTRY);
@@ -21,7 +20,8 @@ export default function HomePage() {
     (s) =>
       s.name.toLowerCase().includes(search.toLowerCase()) ||
       s.id.toLowerCase().includes(search.toLowerCase()) ||
-      (s.ticketCollector && s.ticketCollector.toLowerCase().includes(search.toLowerCase()))
+      (s.ticketCollector &&
+        s.ticketCollector.toLowerCase().includes(search.toLowerCase())),
   );
 
   return (
@@ -33,7 +33,8 @@ export default function HomePage() {
             background-color: #ffffff !important;
             color: #000000 !important;
           }
-          header, .no-print {
+          header,
+          .no-print {
             display: none !important;
           }
           .page-break-inside-avoid {
@@ -94,7 +95,8 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto mt-8">
           <div className="flex justify-between items-center text-xs text-slate-400 mb-5 print:hidden">
             <span>
-              Displaying <strong>{filteredSites.length}</strong> of 100 Registered Locations
+              Displaying <strong>{filteredSites.length}</strong> of 100
+              Registered Locations
             </span>
             <span className="text-emerald-400 font-mono text-[11px]">
               Target Host: {origin || "Detecting..."}
@@ -114,4 +116,6 @@ export default function HomePage() {
       </main>
     </>
   );
-}
+};
+
+export default page;
