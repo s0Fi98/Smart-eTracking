@@ -1,0 +1,2 @@
+# Keep the migration provider aligned with schema.prisma.
+provider = "mysql"

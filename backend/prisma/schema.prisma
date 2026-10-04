@@ -7,90 +7,423 @@ datasource db {
   provider = "mysql"
 }
 
-enum UserRole {
-  ADMIN
-  GMC_OFFICER
-  OPERATOR
-  TICKET_COLLECTOR
+enum PlatformRole {
+  USER
+  SUPER_ADMIN
 }
 
-enum UserStatus {
+enum AccountStatus {
   ACTIVE
   INACTIVE
   SUSPENDED
 }
 
-enum OperatorStatus {
-  ACTIVE
-  INACTIVE
-  BLACKLISTED
+enum OrganizationRole {
+  OWNER
+  ADMIN
+  ACCOUNTANT
+  VIEWER
 }
 
-enum AreaStatus {
+enum SiteRole {
+  MANAGER
+  OPERATOR
+  TICKET_COLLECTOR
+  VIEWER
+}
+
+enum SiteStatus {
   ACTIVE
   INACTIVE
-  UNDER_MAINTENANCE
+  MAINTENANCE
+}
+
+enum LeaseStatus {
+  DRAFT
+  ACTIVE
+  ENDED
+  CANCELLED
+}
+
+enum VehicleType {
+  TWO_WHEELER
+  THREE_WHEELER
+  FOUR_WHEELER
+  HEAVY_VEHICLE
+}
+
+enum SlotStatus {
+  ACTIVE
+  OUT_OF_SERVICE
+  RETIRED
+}
+
+enum BookingStatus {
+  HELD
+  CONFIRMED
+  CHECKED_IN
+  COMPLETED
+  CANCELLED
+  EXPIRED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  UPI
+  CARD
+  NET_BANKING
+  CASH
+}
+
+enum RefundStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  username     String     @unique @db.VarChar(50)
-  passwordHash String     @map("password_hash")
-  name         String
-  contact      String     @db.VarChar(15)
-  email        String?    @unique
-  role         UserRole
-  status       UserStatus @default(ACTIVE)
-  lastLoginAt  DateTime?  @map("last_login_at")
-  createdAt    DateTime   @default(now()) @map("created_at")
-  updatedAt    DateTime   @updatedAt @map("updated_at")
-
-  operatorId    Int?             @map("operator_id")
-  operator      ParkingOperator? @relation(fields: [operatorId], references: [id])
+  id           Int                  @id @default(autoincrement())
+  username     String?              @unique @db.VarChar(50)
+  email        String?              @unique @db.VarChar(191)
+  phone        String?              @unique @db.VarChar(20)
+  passwordHash String?              @map("password_hash")
+  name         String               @db.VarChar(120)
+  platformRole PlatformRole         @default(USER) @map("platform_role")
+  status       AccountStatus        @default(ACTIVE)
+  lastLoginAt  DateTime?            @map("last_login_at") @db.DateTime(3)
+  createdAt    DateTime             @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt    DateTime             @updatedAt @map("updated_at") @db.DateTime(3)
+  memberships  OrganizationMember[]
+  vehicles     Vehicle[]
+  bookings     Booking[]
+  auditLogs    AuditLog[]
 
   @@map("users")
 }
 
-model ParkingOperator {
-  id             Int            @id @default(autoincrement())
-  name           String
-  contactPerson  String?        @map("contact_person")
-  contact        String         @db.VarChar(15)
-  email          String?
-  address        String?        @db.Text
-  status         OperatorStatus @default(ACTIVE)
-  createdAt      DateTime       @default(now()) @map("created_at")
-  updatedAt      DateTime       @updatedAt @map("updated_at")
+model Organization {
+  id                 Int                  @id @default(autoincrement())
+  code               String               @unique @db.VarChar(50)
+  name               String               @db.VarChar(191)
+  legalName          String?              @map("legal_name") @db.VarChar(191)
+  registrationNumber String?              @map("registration_number") @db.VarChar(100)
+  taxNumber          String?              @map("tax_number") @db.VarChar(50)
+  contactPerson      String?              @map("contact_person") @db.VarChar(120)
+  phone              String               @db.VarChar(20)
+  email              String?              @db.VarChar(191)
+  address            String?              @db.Text
+  status             AccountStatus        @default(ACTIVE)
+  createdAt          DateTime             @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt          DateTime             @updatedAt @map("updated_at") @db.DateTime(3)
+  members            OrganizationMember[]
+  leases             ParkingLease[]
 
-  users        User[]
-  parkingAreas ParkingArea[]
-
-  @@map("parking_operators")
+  @@map("organizations")
 }
 
-model ParkingArea {
-  id                  Int        @id @default(autoincrement())
-  code                String     @unique
-  name                String
-  authority           String     @default("Guwahati Municipal Corporation")
-  workOrderNo         String     @map("work_order_no")
-  tenureStart         DateTime   @map("tenure_start") @db.Date
-  tenureEnd           DateTime   @map("tenure_end") @db.Date
-  areaSqft            Int        @map("area_sqft")
-  slotValidity        Int        @map("slot_validity_minutes")
-  latitude            Decimal    @db.Decimal(9, 6)
-  longitude           Decimal    @db.Decimal(9, 6)
-  totalCapacity       Int        @map("total_capacity")
-  ward                String?
-  address             String?    @db.Text
-  openTime            DateTime?  @map("open_time") @db.Time(0)
-  closeTime           DateTime?  @map("close_time") @db.Time(0)
-  status              AreaStatus @default(ACTIVE)
-  createdAt           DateTime   @default(now()) @map("created_at")
-  updatedAt           DateTime   @updatedAt @map("updated_at")
+model OrganizationMember {
+  id             Int              @id @default(autoincrement())
+  organizationId Int              @map("organization_id")
+  userId         Int              @map("user_id")
+  role           OrganizationRole @default(VIEWER)
+  status         AccountStatus    @default(ACTIVE)
+  createdAt      DateTime         @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt      DateTime         @updatedAt @map("updated_at") @db.DateTime(3)
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Restrict)
+  assignments    SiteAssignment[]
 
-  operatorId        Int             @map("operator_id")
-  operator          ParkingOperator @relation(fields: [operatorId], references: [id])
+  @@unique([organizationId, userId])
+  @@index([userId, status])
+  @@map("organization_members")
+}
+
+// Physical sites survive changes of leaseholder. Capacity is derived from slots.
+model ParkingArea {
+  id           Int            @id @default(autoincrement())
+  code         String         @unique @db.VarChar(80)
+  name         String         @db.VarChar(191)
+  authority    String         @default("Guwahati Municipal Corporation") @db.VarChar(191)
+  address      String         @db.Text
+  ward         String?        @db.VarChar(50)
+  areaSqft     Int?           @map("area_sqft")
+  latitude     Decimal?       @db.Decimal(9, 6)
+  longitude    Decimal?       @db.Decimal(9, 6)
+  timezone     String         @default("Asia/Kolkata") @db.VarChar(64)
+  status       SiteStatus     @default(ACTIVE)
+  createdAt    DateTime       @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt    DateTime       @updatedAt @map("updated_at") @db.DateTime(3)
+  leases       ParkingLease[]
+  slots        ParkingSlot[]
+  openingHours OpeningHours[]
+  closures     SiteClosure[]
+  qrCodes      SiteQrCode[]
 
   @@map("parking_areas")
+}
+
+model ParkingLease {
+  id             Int              @id @default(autoincrement())
+  parkingAreaId  Int              @map("parking_area_id")
+  organizationId Int              @map("organization_id")
+  workOrderNo    String           @map("work_order_no") @db.VarChar(100)
+  startsAt       DateTime         @map("starts_at") @db.DateTime(3)
+  endsAt         DateTime         @map("ends_at") @db.DateTime(3)
+  status         LeaseStatus      @default(DRAFT)
+  createdAt      DateTime         @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt      DateTime         @updatedAt @map("updated_at") @db.DateTime(3)
+  parkingArea    ParkingArea      @relation(fields: [parkingAreaId], references: [id], onDelete: Restrict)
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  assignments    SiteAssignment[]
+  pricePlans     PricePlan[]
+  bookings       Booking[]
+
+  @@unique([parkingAreaId, workOrderNo])
+  @@index([parkingAreaId, status, startsAt, endsAt])
+  @@index([organizationId, status])
+  @@map("parking_leases")
+}
+
+// Service must enforce that membership and lease belong to the same organization.
+model SiteAssignment {
+  id        Int                @id @default(autoincrement())
+  memberId  Int                @map("member_id")
+  leaseId   Int                @map("lease_id")
+  role      SiteRole
+  status    AccountStatus      @default(ACTIVE)
+  createdAt DateTime           @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt DateTime           @updatedAt @map("updated_at") @db.DateTime(3)
+  member    OrganizationMember @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  lease     ParkingLease       @relation(fields: [leaseId], references: [id], onDelete: Restrict)
+
+  @@unique([memberId, leaseId, role])
+  @@index([leaseId, status])
+  @@map("site_assignments")
+}
+
+// Local minutes; weekday 0=Monday..6=Sunday. Split overnight periods at midnight.
+model OpeningHours {
+  id            Int         @id @default(autoincrement())
+  parkingAreaId Int         @map("parking_area_id")
+  weekday       Int         @db.UnsignedTinyInt
+  opensMinute   Int         @map("opens_minute") @db.UnsignedSmallInt
+  closesMinute  Int         @map("closes_minute") @db.UnsignedSmallInt
+  parkingArea   ParkingArea @relation(fields: [parkingAreaId], references: [id], onDelete: Restrict)
+
+  @@unique([parkingAreaId, weekday, opensMinute])
+  @@map("opening_hours")
+}
+
+model SiteClosure {
+  id            Int         @id @default(autoincrement())
+  parkingAreaId Int         @map("parking_area_id")
+  startsAt      DateTime    @map("starts_at") @db.DateTime(3)
+  endsAt        DateTime    @map("ends_at") @db.DateTime(3)
+  reason        String      @db.VarChar(255)
+  parkingArea   ParkingArea @relation(fields: [parkingAreaId], references: [id], onDelete: Restrict)
+
+  @@index([parkingAreaId, startsAt, endsAt])
+  @@map("site_closures")
+}
+
+model ParkingSlot {
+  id            Int         @id @default(autoincrement())
+  parkingAreaId Int         @map("parking_area_id")
+  code          String      @db.VarChar(50)
+  zone          String?     @db.VarChar(50)
+  floor         String?     @db.VarChar(30)
+  vehicleType   VehicleType @map("vehicle_type")
+  isAccessible  Boolean     @default(false) @map("is_accessible")
+  hasCharger    Boolean     @default(false) @map("has_charger")
+  status        SlotStatus  @default(ACTIVE)
+  createdAt     DateTime    @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.DateTime(3)
+  parkingArea   ParkingArea @relation(fields: [parkingAreaId], references: [id], onDelete: Restrict)
+  bookings      Booking[]
+
+  @@unique([parkingAreaId, code])
+  @@index([parkingAreaId, vehicleType, status])
+  @@map("parking_slots")
+}
+
+// Public site QR is discovery, not authorization or proof of payment.
+model SiteQrCode {
+  id            Int         @id @default(autoincrement())
+  parkingAreaId Int         @map("parking_area_id")
+  token         String      @unique @default(uuid()) @db.VarChar(36)
+  label         String?     @db.VarChar(100)
+  expiresAt     DateTime?   @map("expires_at") @db.DateTime(3)
+  revokedAt     DateTime?   @map("revoked_at") @db.DateTime(3)
+  createdAt     DateTime    @default(now()) @map("created_at") @db.DateTime(3)
+  parkingArea   ParkingArea @relation(fields: [parkingAreaId], references: [id], onDelete: Restrict)
+  bookings      Booking[]
+
+  @@index([parkingAreaId])
+  @@map("site_qr_codes")
+}
+
+model Vehicle {
+  id                 Int         @id @default(autoincrement())
+  userId             Int         @map("user_id")
+  registrationNumber String      @map("registration_number") @db.VarChar(30)
+  vehicleType        VehicleType @map("vehicle_type")
+  createdAt          DateTime    @default(now()) @map("created_at") @db.DateTime(3)
+  user               User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  bookings           Booking[]
+
+  @@unique([userId, registrationNumber])
+  @@map("vehicles")
+}
+
+// Versioned fixed-duration tariffs. Create a new version when prices change.
+model PricePlan {
+  id                  Int          @id @default(autoincrement())
+  leaseId             Int          @map("lease_id")
+  name                String       @db.VarChar(100)
+  vehicleType         VehicleType  @map("vehicle_type")
+  currency            String       @default("INR") @db.Char(3)
+  durationMinutes     Int          @map("duration_minutes") @db.UnsignedInt
+  priceMinor          BigInt       @map("price_minor") @db.UnsignedBigInt
+  graceMinutes        Int          @default(0) @map("grace_minutes") @db.UnsignedInt
+  overtimeUnitMinutes Int          @map("overtime_unit_minutes") @db.UnsignedInt
+  overtimePriceMinor  BigInt       @map("overtime_price_minor") @db.UnsignedBigInt
+  validFrom           DateTime     @map("valid_from") @db.DateTime(3)
+  validUntil          DateTime?    @map("valid_until") @db.DateTime(3)
+  isActive            Boolean      @default(true) @map("is_active")
+  createdAt           DateTime     @default(now()) @map("created_at") @db.DateTime(3)
+  lease               ParkingLease @relation(fields: [leaseId], references: [id], onDelete: Restrict)
+  bookings            Booking[]
+
+  @@index([leaseId, vehicleType, isActive, validFrom])
+  @@map("price_plans")
+}
+
+model Booking {
+  id                  Int           @id @default(autoincrement())
+  reference           String        @unique @default(uuid()) @db.VarChar(36)
+  idempotencyKey      String        @unique @map("idempotency_key") @db.VarChar(100)
+  userId              Int           @map("user_id")
+  leaseId             Int           @map("lease_id")
+  slotId              Int           @map("slot_id")
+  vehicleId           Int?          @map("vehicle_id")
+  pricePlanId         Int           @map("price_plan_id")
+  qrCodeId            Int?          @map("qr_code_id")
+  vehicleRegistration String        @map("vehicle_registration") @db.VarChar(30)
+  vehicleType         VehicleType   @map("vehicle_type")
+  status              BookingStatus @default(HELD)
+  startsAt            DateTime      @map("starts_at") @db.DateTime(3)
+  endsAt              DateTime      @map("ends_at") @db.DateTime(3)
+  holdExpiresAt       DateTime?     @map("hold_expires_at") @db.DateTime(3)
+  checkedInAt         DateTime?     @map("checked_in_at") @db.DateTime(3)
+  checkedOutAt        DateTime?     @map("checked_out_at") @db.DateTime(3)
+  cancelledAt         DateTime?     @map("cancelled_at") @db.DateTime(3)
+  cancellationReason  String?       @map("cancellation_reason") @db.VarChar(255)
+  currency            String        @default("INR") @db.Char(3)
+  subtotalMinor       BigInt        @map("subtotal_minor") @db.UnsignedBigInt
+  taxMinor            BigInt        @default(0) @map("tax_minor") @db.UnsignedBigInt
+  discountMinor       BigInt        @default(0) @map("discount_minor") @db.UnsignedBigInt
+  overtimeMinor       BigInt        @default(0) @map("overtime_minor") @db.UnsignedBigInt
+  totalMinor          BigInt        @map("total_minor") @db.UnsignedBigInt
+  pricingSnapshot     Json          @map("pricing_snapshot")
+  createdAt           DateTime      @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt           DateTime      @updatedAt @map("updated_at") @db.DateTime(3)
+  user                User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  lease               ParkingLease  @relation(fields: [leaseId], references: [id], onDelete: Restrict)
+  slot                ParkingSlot   @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  vehicle             Vehicle?      @relation(fields: [vehicleId], references: [id], onDelete: Restrict)
+  pricePlan           PricePlan     @relation(fields: [pricePlanId], references: [id], onDelete: Restrict)
+  qrCode              SiteQrCode?   @relation(fields: [qrCodeId], references: [id], onDelete: Restrict)
+  payments            Payment[]
+
+  @@index([slotId, status, startsAt, endsAt])
+  @@index([leaseId, status, startsAt])
+  @@index([userId, createdAt])
+  @@index([status, holdExpiresAt])
+  @@map("bookings")
+}
+
+// Multiple attempts and overtime collections can belong to one booking.
+model Payment {
+  id                Int            @id @default(autoincrement())
+  bookingId         Int            @map("booking_id")
+  idempotencyKey    String         @unique @map("idempotency_key") @db.VarChar(100)
+  provider          String         @db.VarChar(50)
+  providerOrderId   String?        @map("provider_order_id") @db.VarChar(191)
+  providerPaymentId String?        @map("provider_payment_id") @db.VarChar(191)
+  method            PaymentMethod
+  status            PaymentStatus  @default(PENDING)
+  amountMinor       BigInt         @map("amount_minor") @db.UnsignedBigInt
+  currency          String         @default("INR") @db.Char(3)
+  paidAt            DateTime?      @map("paid_at") @db.DateTime(3)
+  failureReason     String?        @map("failure_reason") @db.VarChar(255)
+  createdAt         DateTime       @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt         DateTime       @updatedAt @map("updated_at") @db.DateTime(3)
+  booking           Booking        @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  refunds           Refund[]
+  events            PaymentEvent[]
+
+  @@unique([provider, providerPaymentId])
+  @@index([provider, providerOrderId])
+  @@index([bookingId, status])
+  @@index([status, createdAt])
+  @@map("payments")
+}
+
+model Refund {
+  id               Int          @id @default(autoincrement())
+  paymentId        Int          @map("payment_id")
+  idempotencyKey   String       @unique @map("idempotency_key") @db.VarChar(100)
+  provider         String       @db.VarChar(50)
+  providerRefundId String?      @map("provider_refund_id") @db.VarChar(191)
+  amountMinor      BigInt       @map("amount_minor") @db.UnsignedBigInt
+  reason           String       @db.VarChar(255)
+  status           RefundStatus @default(PENDING)
+  processedAt      DateTime?    @map("processed_at") @db.DateTime(3)
+  createdAt        DateTime     @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt        DateTime     @updatedAt @map("updated_at") @db.DateTime(3)
+  payment          Payment      @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@unique([provider, providerRefundId])
+  @@index([paymentId, status])
+  @@map("refunds")
+}
+
+// Insert verified events once; retain only redacted payloads.
+model PaymentEvent {
+  id              Int       @id @default(autoincrement())
+  paymentId       Int?      @map("payment_id")
+  provider        String    @db.VarChar(50)
+  providerEventId String    @map("provider_event_id") @db.VarChar(191)
+  eventType       String    @map("event_type") @db.VarChar(100)
+  payload         Json?
+  receivedAt      DateTime  @default(now()) @map("received_at") @db.DateTime(3)
+  processedAt     DateTime? @map("processed_at") @db.DateTime(3)
+  payment         Payment?  @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@unique([provider, providerEventId])
+  @@index([paymentId])
+  @@index([processedAt, receivedAt])
+  @@map("payment_events")
+}
+
+model AuditLog {
+  id         BigInt   @id @default(autoincrement())
+  actorId    Int?     @map("actor_id")
+  action     String   @db.VarChar(100)
+  entityType String   @map("entity_type") @db.VarChar(50)
+  entityId   String   @map("entity_id") @db.VarChar(100)
+  metadata   Json?
+  createdAt  DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([entityType, entityId, createdAt])
+  @@index([actorId, createdAt])
+  @@map("audit_logs")
 }

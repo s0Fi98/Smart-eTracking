@@ -7,11 +7,15 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test test/*.test.js",
     "dev": "tsx watch index.js",
     "db:push": "node node_modules/prisma/build/index.js db push",
     "db:generate": "node node_modules/prisma/build/index.js generate",
-    "db:studio": "node node_modules/prisma/build/index.js studio"
+    "db:studio": "node node_modules/prisma/build/index.js studio",
+    "admin:create": "tsx scripts/create-admin.js",
+    "db:validate": "node node_modules/prisma/build/index.js validate",
+    "db:deploy": "node node_modules/prisma/build/index.js migrate deploy",
+    "db:status": "node node_modules/prisma/build/index.js migrate status"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.10.0",

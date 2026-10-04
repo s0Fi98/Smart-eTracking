@@ -29,21 +29,15 @@ export type AggregateParkingArea = {
 export type ParkingAreaAvgAggregateOutputType = {
   id: number | null
   areaSqft: number | null
-  slotValidity: number | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
-  totalCapacity: number | null
-  operatorId: number | null
 }
 
 export type ParkingAreaSumAggregateOutputType = {
   id: number | null
   areaSqft: number | null
-  slotValidity: number | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
-  totalCapacity: number | null
-  operatorId: number | null
 }
 
 export type ParkingAreaMinAggregateOutputType = {
@@ -51,22 +45,15 @@ export type ParkingAreaMinAggregateOutputType = {
   code: string | null
   name: string | null
   authority: string | null
-  workOrderNo: string | null
-  tenureStart: Date | null
-  tenureEnd: Date | null
+  address: string | null
+  ward: string | null
   areaSqft: number | null
-  slotValidity: number | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
-  totalCapacity: number | null
-  ward: string | null
-  address: string | null
-  openTime: Date | null
-  closeTime: Date | null
-  status: $Enums.AreaStatus | null
+  timezone: string | null
+  status: $Enums.SiteStatus | null
   createdAt: Date | null
   updatedAt: Date | null
-  operatorId: number | null
 }
 
 export type ParkingAreaMaxAggregateOutputType = {
@@ -74,22 +61,15 @@ export type ParkingAreaMaxAggregateOutputType = {
   code: string | null
   name: string | null
   authority: string | null
-  workOrderNo: string | null
-  tenureStart: Date | null
-  tenureEnd: Date | null
+  address: string | null
+  ward: string | null
   areaSqft: number | null
-  slotValidity: number | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
-  totalCapacity: number | null
-  ward: string | null
-  address: string | null
-  openTime: Date | null
-  closeTime: Date | null
-  status: $Enums.AreaStatus | null
+  timezone: string | null
+  status: $Enums.SiteStatus | null
   createdAt: Date | null
   updatedAt: Date | null
-  operatorId: number | null
 }
 
 export type ParkingAreaCountAggregateOutputType = {
@@ -97,22 +77,15 @@ export type ParkingAreaCountAggregateOutputType = {
   code: number
   name: number
   authority: number
-  workOrderNo: number
-  tenureStart: number
-  tenureEnd: number
+  address: number
+  ward: number
   areaSqft: number
-  slotValidity: number
   latitude: number
   longitude: number
-  totalCapacity: number
-  ward: number
-  address: number
-  openTime: number
-  closeTime: number
+  timezone: number
   status: number
   createdAt: number
   updatedAt: number
-  operatorId: number
   _all: number
 }
 
@@ -120,21 +93,15 @@ export type ParkingAreaCountAggregateOutputType = {
 export type ParkingAreaAvgAggregateInputType = {
   id?: true
   areaSqft?: true
-  slotValidity?: true
   latitude?: true
   longitude?: true
-  totalCapacity?: true
-  operatorId?: true
 }
 
 export type ParkingAreaSumAggregateInputType = {
   id?: true
   areaSqft?: true
-  slotValidity?: true
   latitude?: true
   longitude?: true
-  totalCapacity?: true
-  operatorId?: true
 }
 
 export type ParkingAreaMinAggregateInputType = {
@@ -142,22 +109,15 @@ export type ParkingAreaMinAggregateInputType = {
   code?: true
   name?: true
   authority?: true
-  workOrderNo?: true
-  tenureStart?: true
-  tenureEnd?: true
+  address?: true
+  ward?: true
   areaSqft?: true
-  slotValidity?: true
   latitude?: true
   longitude?: true
-  totalCapacity?: true
-  ward?: true
-  address?: true
-  openTime?: true
-  closeTime?: true
+  timezone?: true
   status?: true
   createdAt?: true
   updatedAt?: true
-  operatorId?: true
 }
 
 export type ParkingAreaMaxAggregateInputType = {
@@ -165,22 +125,15 @@ export type ParkingAreaMaxAggregateInputType = {
   code?: true
   name?: true
   authority?: true
-  workOrderNo?: true
-  tenureStart?: true
-  tenureEnd?: true
+  address?: true
+  ward?: true
   areaSqft?: true
-  slotValidity?: true
   latitude?: true
   longitude?: true
-  totalCapacity?: true
-  ward?: true
-  address?: true
-  openTime?: true
-  closeTime?: true
+  timezone?: true
   status?: true
   createdAt?: true
   updatedAt?: true
-  operatorId?: true
 }
 
 export type ParkingAreaCountAggregateInputType = {
@@ -188,22 +141,15 @@ export type ParkingAreaCountAggregateInputType = {
   code?: true
   name?: true
   authority?: true
-  workOrderNo?: true
-  tenureStart?: true
-  tenureEnd?: true
+  address?: true
+  ward?: true
   areaSqft?: true
-  slotValidity?: true
   latitude?: true
   longitude?: true
-  totalCapacity?: true
-  ward?: true
-  address?: true
-  openTime?: true
-  closeTime?: true
+  timezone?: true
   status?: true
   createdAt?: true
   updatedAt?: true
-  operatorId?: true
   _all?: true
 }
 
@@ -298,22 +244,15 @@ export type ParkingAreaGroupByOutputType = {
   code: string
   name: string
   authority: string
-  workOrderNo: string
-  tenureStart: Date
-  tenureEnd: Date
-  areaSqft: number
-  slotValidity: number
-  latitude: runtime.Decimal
-  longitude: runtime.Decimal
-  totalCapacity: number
+  address: string
   ward: string | null
-  address: string | null
-  openTime: Date | null
-  closeTime: Date | null
-  status: $Enums.AreaStatus
+  areaSqft: number | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  timezone: string
+  status: $Enums.SiteStatus
   createdAt: Date
   updatedAt: Date
-  operatorId: number
   _count: ParkingAreaCountAggregateOutputType | null
   _avg: ParkingAreaAvgAggregateOutputType | null
   _sum: ParkingAreaSumAggregateOutputType | null
@@ -344,23 +283,20 @@ export type ParkingAreaWhereInput = {
   code?: Prisma.StringFilter<"ParkingArea"> | string
   name?: Prisma.StringFilter<"ParkingArea"> | string
   authority?: Prisma.StringFilter<"ParkingArea"> | string
-  workOrderNo?: Prisma.StringFilter<"ParkingArea"> | string
-  tenureStart?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  tenureEnd?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  areaSqft?: Prisma.IntFilter<"ParkingArea"> | number
-  slotValidity?: Prisma.IntFilter<"ParkingArea"> | number
-  latitude?: Prisma.DecimalFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFilter<"ParkingArea"> | number
+  address?: Prisma.StringFilter<"ParkingArea"> | string
   ward?: Prisma.StringNullableFilter<"ParkingArea"> | string | null
-  address?: Prisma.StringNullableFilter<"ParkingArea"> | string | null
-  openTime?: Prisma.DateTimeNullableFilter<"ParkingArea"> | Date | string | null
-  closeTime?: Prisma.DateTimeNullableFilter<"ParkingArea"> | Date | string | null
-  status?: Prisma.EnumAreaStatusFilter<"ParkingArea"> | $Enums.AreaStatus
+  areaSqft?: Prisma.IntNullableFilter<"ParkingArea"> | number | null
+  latitude?: Prisma.DecimalNullableFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFilter<"ParkingArea"> | string
+  status?: Prisma.EnumSiteStatusFilter<"ParkingArea"> | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  operatorId?: Prisma.IntFilter<"ParkingArea"> | number
-  operator?: Prisma.XOR<Prisma.ParkingOperatorScalarRelationFilter, Prisma.ParkingOperatorWhereInput>
+  leases?: Prisma.ParkingLeaseListRelationFilter
+  slots?: Prisma.ParkingSlotListRelationFilter
+  openingHours?: Prisma.OpeningHoursListRelationFilter
+  closures?: Prisma.SiteClosureListRelationFilter
+  qrCodes?: Prisma.SiteQrCodeListRelationFilter
 }
 
 export type ParkingAreaOrderByWithRelationInput = {
@@ -368,23 +304,20 @@ export type ParkingAreaOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   authority?: Prisma.SortOrder
-  workOrderNo?: Prisma.SortOrder
-  tenureStart?: Prisma.SortOrder
-  tenureEnd?: Prisma.SortOrder
-  areaSqft?: Prisma.SortOrder
-  slotValidity?: Prisma.SortOrder
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
-  totalCapacity?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   ward?: Prisma.SortOrderInput | Prisma.SortOrder
-  address?: Prisma.SortOrderInput | Prisma.SortOrder
-  openTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  closeTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  areaSqft?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  operatorId?: Prisma.SortOrder
-  operator?: Prisma.ParkingOperatorOrderByWithRelationInput
+  leases?: Prisma.ParkingLeaseOrderByRelationAggregateInput
+  slots?: Prisma.ParkingSlotOrderByRelationAggregateInput
+  openingHours?: Prisma.OpeningHoursOrderByRelationAggregateInput
+  closures?: Prisma.SiteClosureOrderByRelationAggregateInput
+  qrCodes?: Prisma.SiteQrCodeOrderByRelationAggregateInput
   _relevance?: Prisma.ParkingAreaOrderByRelevanceInput
 }
 
@@ -396,23 +329,20 @@ export type ParkingAreaWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ParkingAreaWhereInput | Prisma.ParkingAreaWhereInput[]
   name?: Prisma.StringFilter<"ParkingArea"> | string
   authority?: Prisma.StringFilter<"ParkingArea"> | string
-  workOrderNo?: Prisma.StringFilter<"ParkingArea"> | string
-  tenureStart?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  tenureEnd?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  areaSqft?: Prisma.IntFilter<"ParkingArea"> | number
-  slotValidity?: Prisma.IntFilter<"ParkingArea"> | number
-  latitude?: Prisma.DecimalFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFilter<"ParkingArea"> | number
+  address?: Prisma.StringFilter<"ParkingArea"> | string
   ward?: Prisma.StringNullableFilter<"ParkingArea"> | string | null
-  address?: Prisma.StringNullableFilter<"ParkingArea"> | string | null
-  openTime?: Prisma.DateTimeNullableFilter<"ParkingArea"> | Date | string | null
-  closeTime?: Prisma.DateTimeNullableFilter<"ParkingArea"> | Date | string | null
-  status?: Prisma.EnumAreaStatusFilter<"ParkingArea"> | $Enums.AreaStatus
+  areaSqft?: Prisma.IntNullableFilter<"ParkingArea"> | number | null
+  latitude?: Prisma.DecimalNullableFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFilter<"ParkingArea"> | string
+  status?: Prisma.EnumSiteStatusFilter<"ParkingArea"> | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  operatorId?: Prisma.IntFilter<"ParkingArea"> | number
-  operator?: Prisma.XOR<Prisma.ParkingOperatorScalarRelationFilter, Prisma.ParkingOperatorWhereInput>
+  leases?: Prisma.ParkingLeaseListRelationFilter
+  slots?: Prisma.ParkingSlotListRelationFilter
+  openingHours?: Prisma.OpeningHoursListRelationFilter
+  closures?: Prisma.SiteClosureListRelationFilter
+  qrCodes?: Prisma.SiteQrCodeListRelationFilter
 }, "id" | "code">
 
 export type ParkingAreaOrderByWithAggregationInput = {
@@ -420,22 +350,15 @@ export type ParkingAreaOrderByWithAggregationInput = {
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   authority?: Prisma.SortOrder
-  workOrderNo?: Prisma.SortOrder
-  tenureStart?: Prisma.SortOrder
-  tenureEnd?: Prisma.SortOrder
-  areaSqft?: Prisma.SortOrder
-  slotValidity?: Prisma.SortOrder
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
-  totalCapacity?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   ward?: Prisma.SortOrderInput | Prisma.SortOrder
-  address?: Prisma.SortOrderInput | Prisma.SortOrder
-  openTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  closeTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  areaSqft?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  operatorId?: Prisma.SortOrder
   _count?: Prisma.ParkingAreaCountOrderByAggregateInput
   _avg?: Prisma.ParkingAreaAvgOrderByAggregateInput
   _max?: Prisma.ParkingAreaMaxOrderByAggregateInput
@@ -451,44 +374,35 @@ export type ParkingAreaScalarWhereWithAggregatesInput = {
   code?: Prisma.StringWithAggregatesFilter<"ParkingArea"> | string
   name?: Prisma.StringWithAggregatesFilter<"ParkingArea"> | string
   authority?: Prisma.StringWithAggregatesFilter<"ParkingArea"> | string
-  workOrderNo?: Prisma.StringWithAggregatesFilter<"ParkingArea"> | string
-  tenureStart?: Prisma.DateTimeWithAggregatesFilter<"ParkingArea"> | Date | string
-  tenureEnd?: Prisma.DateTimeWithAggregatesFilter<"ParkingArea"> | Date | string
-  areaSqft?: Prisma.IntWithAggregatesFilter<"ParkingArea"> | number
-  slotValidity?: Prisma.IntWithAggregatesFilter<"ParkingArea"> | number
-  latitude?: Prisma.DecimalWithAggregatesFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalWithAggregatesFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntWithAggregatesFilter<"ParkingArea"> | number
+  address?: Prisma.StringWithAggregatesFilter<"ParkingArea"> | string
   ward?: Prisma.StringNullableWithAggregatesFilter<"ParkingArea"> | string | null
-  address?: Prisma.StringNullableWithAggregatesFilter<"ParkingArea"> | string | null
-  openTime?: Prisma.DateTimeNullableWithAggregatesFilter<"ParkingArea"> | Date | string | null
-  closeTime?: Prisma.DateTimeNullableWithAggregatesFilter<"ParkingArea"> | Date | string | null
-  status?: Prisma.EnumAreaStatusWithAggregatesFilter<"ParkingArea"> | $Enums.AreaStatus
+  areaSqft?: Prisma.IntNullableWithAggregatesFilter<"ParkingArea"> | number | null
+  latitude?: Prisma.DecimalNullableWithAggregatesFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableWithAggregatesFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringWithAggregatesFilter<"ParkingArea"> | string
+  status?: Prisma.EnumSiteStatusWithAggregatesFilter<"ParkingArea"> | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ParkingArea"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ParkingArea"> | Date | string
-  operatorId?: Prisma.IntWithAggregatesFilter<"ParkingArea"> | number
 }
 
 export type ParkingAreaCreateInput = {
   code: string
   name: string
   authority?: string
-  workOrderNo: string
-  tenureStart: Date | string
-  tenureEnd: Date | string
-  areaSqft: number
-  slotValidity: number
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity: number
+  address: string
   ward?: string | null
-  address?: string | null
-  openTime?: Date | string | null
-  closeTime?: Date | string | null
-  status?: $Enums.AreaStatus
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  operator: Prisma.ParkingOperatorCreateNestedOneWithoutParkingAreasInput
+  leases?: Prisma.ParkingLeaseCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeCreateNestedManyWithoutParkingAreaInput
 }
 
 export type ParkingAreaUncheckedCreateInput = {
@@ -496,44 +410,40 @@ export type ParkingAreaUncheckedCreateInput = {
   code: string
   name: string
   authority?: string
-  workOrderNo: string
-  tenureStart: Date | string
-  tenureEnd: Date | string
-  areaSqft: number
-  slotValidity: number
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity: number
+  address: string
   ward?: string | null
-  address?: string | null
-  openTime?: Date | string | null
-  closeTime?: Date | string | null
-  status?: $Enums.AreaStatus
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  operatorId: number
+  leases?: Prisma.ParkingLeaseUncheckedCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotUncheckedCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursUncheckedCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureUncheckedCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedCreateNestedManyWithoutParkingAreaInput
 }
 
 export type ParkingAreaUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   authority?: Prisma.StringFieldUpdateOperationsInput | string
-  workOrderNo?: Prisma.StringFieldUpdateOperationsInput | string
-  tenureStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenureEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  areaSqft?: Prisma.IntFieldUpdateOperationsInput | number
-  slotValidity?: Prisma.IntFieldUpdateOperationsInput | number
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFieldUpdateOperationsInput | number
+  address?: Prisma.StringFieldUpdateOperationsInput | string
   ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  closeTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumAreaStatusFieldUpdateOperationsInput | $Enums.AreaStatus
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  operator?: Prisma.ParkingOperatorUpdateOneRequiredWithoutParkingAreasNestedInput
+  leases?: Prisma.ParkingLeaseUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUpdateManyWithoutParkingAreaNestedInput
 }
 
 export type ParkingAreaUncheckedUpdateInput = {
@@ -541,22 +451,20 @@ export type ParkingAreaUncheckedUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   authority?: Prisma.StringFieldUpdateOperationsInput | string
-  workOrderNo?: Prisma.StringFieldUpdateOperationsInput | string
-  tenureStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenureEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  areaSqft?: Prisma.IntFieldUpdateOperationsInput | number
-  slotValidity?: Prisma.IntFieldUpdateOperationsInput | number
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFieldUpdateOperationsInput | number
+  address?: Prisma.StringFieldUpdateOperationsInput | string
   ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  closeTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumAreaStatusFieldUpdateOperationsInput | $Enums.AreaStatus
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  operatorId?: Prisma.IntFieldUpdateOperationsInput | number
+  leases?: Prisma.ParkingLeaseUncheckedUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUncheckedUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUncheckedUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUncheckedUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedUpdateManyWithoutParkingAreaNestedInput
 }
 
 export type ParkingAreaCreateManyInput = {
@@ -564,41 +472,28 @@ export type ParkingAreaCreateManyInput = {
   code: string
   name: string
   authority?: string
-  workOrderNo: string
-  tenureStart: Date | string
-  tenureEnd: Date | string
-  areaSqft: number
-  slotValidity: number
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity: number
+  address: string
   ward?: string | null
-  address?: string | null
-  openTime?: Date | string | null
-  closeTime?: Date | string | null
-  status?: $Enums.AreaStatus
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  operatorId: number
 }
 
 export type ParkingAreaUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   authority?: Prisma.StringFieldUpdateOperationsInput | string
-  workOrderNo?: Prisma.StringFieldUpdateOperationsInput | string
-  tenureStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenureEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  areaSqft?: Prisma.IntFieldUpdateOperationsInput | number
-  slotValidity?: Prisma.IntFieldUpdateOperationsInput | number
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFieldUpdateOperationsInput | number
+  address?: Prisma.StringFieldUpdateOperationsInput | string
   ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  closeTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumAreaStatusFieldUpdateOperationsInput | $Enums.AreaStatus
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -608,32 +503,15 @@ export type ParkingAreaUncheckedUpdateManyInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   authority?: Prisma.StringFieldUpdateOperationsInput | string
-  workOrderNo?: Prisma.StringFieldUpdateOperationsInput | string
-  tenureStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenureEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  areaSqft?: Prisma.IntFieldUpdateOperationsInput | number
-  slotValidity?: Prisma.IntFieldUpdateOperationsInput | number
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFieldUpdateOperationsInput | number
+  address?: Prisma.StringFieldUpdateOperationsInput | string
   ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  closeTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumAreaStatusFieldUpdateOperationsInput | $Enums.AreaStatus
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  operatorId?: Prisma.IntFieldUpdateOperationsInput | number
-}
-
-export type ParkingAreaListRelationFilter = {
-  every?: Prisma.ParkingAreaWhereInput
-  some?: Prisma.ParkingAreaWhereInput
-  none?: Prisma.ParkingAreaWhereInput
-}
-
-export type ParkingAreaOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
 }
 
 export type ParkingAreaOrderByRelevanceInput = {
@@ -647,32 +525,22 @@ export type ParkingAreaCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   authority?: Prisma.SortOrder
-  workOrderNo?: Prisma.SortOrder
-  tenureStart?: Prisma.SortOrder
-  tenureEnd?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  ward?: Prisma.SortOrder
   areaSqft?: Prisma.SortOrder
-  slotValidity?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  totalCapacity?: Prisma.SortOrder
-  ward?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  openTime?: Prisma.SortOrder
-  closeTime?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  operatorId?: Prisma.SortOrder
 }
 
 export type ParkingAreaAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   areaSqft?: Prisma.SortOrder
-  slotValidity?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  totalCapacity?: Prisma.SortOrder
-  operatorId?: Prisma.SortOrder
 }
 
 export type ParkingAreaMaxOrderByAggregateInput = {
@@ -680,22 +548,15 @@ export type ParkingAreaMaxOrderByAggregateInput = {
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   authority?: Prisma.SortOrder
-  workOrderNo?: Prisma.SortOrder
-  tenureStart?: Prisma.SortOrder
-  tenureEnd?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  ward?: Prisma.SortOrder
   areaSqft?: Prisma.SortOrder
-  slotValidity?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  totalCapacity?: Prisma.SortOrder
-  ward?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  openTime?: Prisma.SortOrder
-  closeTime?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  operatorId?: Prisma.SortOrder
 }
 
 export type ParkingAreaMinOrderByAggregateInput = {
@@ -703,270 +564,654 @@ export type ParkingAreaMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   authority?: Prisma.SortOrder
-  workOrderNo?: Prisma.SortOrder
-  tenureStart?: Prisma.SortOrder
-  tenureEnd?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  ward?: Prisma.SortOrder
   areaSqft?: Prisma.SortOrder
-  slotValidity?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  totalCapacity?: Prisma.SortOrder
-  ward?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  openTime?: Prisma.SortOrder
-  closeTime?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  operatorId?: Prisma.SortOrder
 }
 
 export type ParkingAreaSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   areaSqft?: Prisma.SortOrder
-  slotValidity?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  totalCapacity?: Prisma.SortOrder
-  operatorId?: Prisma.SortOrder
 }
 
-export type ParkingAreaCreateNestedManyWithoutOperatorInput = {
-  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOperatorInput, Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput> | Prisma.ParkingAreaCreateWithoutOperatorInput[] | Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput[]
-  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput | Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput[]
-  createMany?: Prisma.ParkingAreaCreateManyOperatorInputEnvelope
-  connect?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
+export type ParkingAreaScalarRelationFilter = {
+  is?: Prisma.ParkingAreaWhereInput
+  isNot?: Prisma.ParkingAreaWhereInput
 }
 
-export type ParkingAreaUncheckedCreateNestedManyWithoutOperatorInput = {
-  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOperatorInput, Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput> | Prisma.ParkingAreaCreateWithoutOperatorInput[] | Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput[]
-  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput | Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput[]
-  createMany?: Prisma.ParkingAreaCreateManyOperatorInputEnvelope
-  connect?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
-export type ParkingAreaUpdateManyWithoutOperatorNestedInput = {
-  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOperatorInput, Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput> | Prisma.ParkingAreaCreateWithoutOperatorInput[] | Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput[]
-  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput | Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput[]
-  upsert?: Prisma.ParkingAreaUpsertWithWhereUniqueWithoutOperatorInput | Prisma.ParkingAreaUpsertWithWhereUniqueWithoutOperatorInput[]
-  createMany?: Prisma.ParkingAreaCreateManyOperatorInputEnvelope
-  set?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  disconnect?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  delete?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  connect?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  update?: Prisma.ParkingAreaUpdateWithWhereUniqueWithoutOperatorInput | Prisma.ParkingAreaUpdateWithWhereUniqueWithoutOperatorInput[]
-  updateMany?: Prisma.ParkingAreaUpdateManyWithWhereWithoutOperatorInput | Prisma.ParkingAreaUpdateManyWithWhereWithoutOperatorInput[]
-  deleteMany?: Prisma.ParkingAreaScalarWhereInput | Prisma.ParkingAreaScalarWhereInput[]
-}
-
-export type ParkingAreaUncheckedUpdateManyWithoutOperatorNestedInput = {
-  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOperatorInput, Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput> | Prisma.ParkingAreaCreateWithoutOperatorInput[] | Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput[]
-  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput | Prisma.ParkingAreaCreateOrConnectWithoutOperatorInput[]
-  upsert?: Prisma.ParkingAreaUpsertWithWhereUniqueWithoutOperatorInput | Prisma.ParkingAreaUpsertWithWhereUniqueWithoutOperatorInput[]
-  createMany?: Prisma.ParkingAreaCreateManyOperatorInputEnvelope
-  set?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  disconnect?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  delete?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  connect?: Prisma.ParkingAreaWhereUniqueInput | Prisma.ParkingAreaWhereUniqueInput[]
-  update?: Prisma.ParkingAreaUpdateWithWhereUniqueWithoutOperatorInput | Prisma.ParkingAreaUpdateWithWhereUniqueWithoutOperatorInput[]
-  updateMany?: Prisma.ParkingAreaUpdateManyWithWhereWithoutOperatorInput | Prisma.ParkingAreaUpdateManyWithWhereWithoutOperatorInput[]
-  deleteMany?: Prisma.ParkingAreaScalarWhereInput | Prisma.ParkingAreaScalarWhereInput[]
-}
-
-export type DecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
   decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-export type EnumAreaStatusFieldUpdateOperationsInput = {
-  set?: $Enums.AreaStatus
+export type EnumSiteStatusFieldUpdateOperationsInput = {
+  set?: $Enums.SiteStatus
 }
 
-export type ParkingAreaCreateWithoutOperatorInput = {
+export type ParkingAreaCreateNestedOneWithoutLeasesInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutLeasesInput, Prisma.ParkingAreaUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutLeasesInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+}
+
+export type ParkingAreaUpdateOneRequiredWithoutLeasesNestedInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutLeasesInput, Prisma.ParkingAreaUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutLeasesInput
+  upsert?: Prisma.ParkingAreaUpsertWithoutLeasesInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ParkingAreaUpdateToOneWithWhereWithoutLeasesInput, Prisma.ParkingAreaUpdateWithoutLeasesInput>, Prisma.ParkingAreaUncheckedUpdateWithoutLeasesInput>
+}
+
+export type ParkingAreaCreateNestedOneWithoutOpeningHoursInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOpeningHoursInput, Prisma.ParkingAreaUncheckedCreateWithoutOpeningHoursInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutOpeningHoursInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+}
+
+export type ParkingAreaUpdateOneRequiredWithoutOpeningHoursNestedInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOpeningHoursInput, Prisma.ParkingAreaUncheckedCreateWithoutOpeningHoursInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutOpeningHoursInput
+  upsert?: Prisma.ParkingAreaUpsertWithoutOpeningHoursInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ParkingAreaUpdateToOneWithWhereWithoutOpeningHoursInput, Prisma.ParkingAreaUpdateWithoutOpeningHoursInput>, Prisma.ParkingAreaUncheckedUpdateWithoutOpeningHoursInput>
+}
+
+export type ParkingAreaCreateNestedOneWithoutClosuresInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutClosuresInput, Prisma.ParkingAreaUncheckedCreateWithoutClosuresInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutClosuresInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+}
+
+export type ParkingAreaUpdateOneRequiredWithoutClosuresNestedInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutClosuresInput, Prisma.ParkingAreaUncheckedCreateWithoutClosuresInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutClosuresInput
+  upsert?: Prisma.ParkingAreaUpsertWithoutClosuresInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ParkingAreaUpdateToOneWithWhereWithoutClosuresInput, Prisma.ParkingAreaUpdateWithoutClosuresInput>, Prisma.ParkingAreaUncheckedUpdateWithoutClosuresInput>
+}
+
+export type ParkingAreaCreateNestedOneWithoutSlotsInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutSlotsInput, Prisma.ParkingAreaUncheckedCreateWithoutSlotsInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutSlotsInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+}
+
+export type ParkingAreaUpdateOneRequiredWithoutSlotsNestedInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutSlotsInput, Prisma.ParkingAreaUncheckedCreateWithoutSlotsInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutSlotsInput
+  upsert?: Prisma.ParkingAreaUpsertWithoutSlotsInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ParkingAreaUpdateToOneWithWhereWithoutSlotsInput, Prisma.ParkingAreaUpdateWithoutSlotsInput>, Prisma.ParkingAreaUncheckedUpdateWithoutSlotsInput>
+}
+
+export type ParkingAreaCreateNestedOneWithoutQrCodesInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutQrCodesInput, Prisma.ParkingAreaUncheckedCreateWithoutQrCodesInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutQrCodesInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+}
+
+export type ParkingAreaUpdateOneRequiredWithoutQrCodesNestedInput = {
+  create?: Prisma.XOR<Prisma.ParkingAreaCreateWithoutQrCodesInput, Prisma.ParkingAreaUncheckedCreateWithoutQrCodesInput>
+  connectOrCreate?: Prisma.ParkingAreaCreateOrConnectWithoutQrCodesInput
+  upsert?: Prisma.ParkingAreaUpsertWithoutQrCodesInput
+  connect?: Prisma.ParkingAreaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ParkingAreaUpdateToOneWithWhereWithoutQrCodesInput, Prisma.ParkingAreaUpdateWithoutQrCodesInput>, Prisma.ParkingAreaUncheckedUpdateWithoutQrCodesInput>
+}
+
+export type ParkingAreaCreateWithoutLeasesInput = {
   code: string
   name: string
   authority?: string
-  workOrderNo: string
-  tenureStart: Date | string
-  tenureEnd: Date | string
-  areaSqft: number
-  slotValidity: number
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity: number
+  address: string
   ward?: string | null
-  address?: string | null
-  openTime?: Date | string | null
-  closeTime?: Date | string | null
-  status?: $Enums.AreaStatus
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  slots?: Prisma.ParkingSlotCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeCreateNestedManyWithoutParkingAreaInput
 }
 
-export type ParkingAreaUncheckedCreateWithoutOperatorInput = {
+export type ParkingAreaUncheckedCreateWithoutLeasesInput = {
   id?: number
   code: string
   name: string
   authority?: string
-  workOrderNo: string
-  tenureStart: Date | string
-  tenureEnd: Date | string
-  areaSqft: number
-  slotValidity: number
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity: number
+  address: string
   ward?: string | null
-  address?: string | null
-  openTime?: Date | string | null
-  closeTime?: Date | string | null
-  status?: $Enums.AreaStatus
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  slots?: Prisma.ParkingSlotUncheckedCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursUncheckedCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureUncheckedCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedCreateNestedManyWithoutParkingAreaInput
 }
 
-export type ParkingAreaCreateOrConnectWithoutOperatorInput = {
+export type ParkingAreaCreateOrConnectWithoutLeasesInput = {
   where: Prisma.ParkingAreaWhereUniqueInput
-  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOperatorInput, Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput>
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutLeasesInput, Prisma.ParkingAreaUncheckedCreateWithoutLeasesInput>
 }
 
-export type ParkingAreaCreateManyOperatorInputEnvelope = {
-  data: Prisma.ParkingAreaCreateManyOperatorInput | Prisma.ParkingAreaCreateManyOperatorInput[]
-  skipDuplicates?: boolean
+export type ParkingAreaUpsertWithoutLeasesInput = {
+  update: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutLeasesInput, Prisma.ParkingAreaUncheckedUpdateWithoutLeasesInput>
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutLeasesInput, Prisma.ParkingAreaUncheckedCreateWithoutLeasesInput>
+  where?: Prisma.ParkingAreaWhereInput
 }
 
-export type ParkingAreaUpsertWithWhereUniqueWithoutOperatorInput = {
-  where: Prisma.ParkingAreaWhereUniqueInput
-  update: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutOperatorInput, Prisma.ParkingAreaUncheckedUpdateWithoutOperatorInput>
-  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOperatorInput, Prisma.ParkingAreaUncheckedCreateWithoutOperatorInput>
+export type ParkingAreaUpdateToOneWithWhereWithoutLeasesInput = {
+  where?: Prisma.ParkingAreaWhereInput
+  data: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutLeasesInput, Prisma.ParkingAreaUncheckedUpdateWithoutLeasesInput>
 }
 
-export type ParkingAreaUpdateWithWhereUniqueWithoutOperatorInput = {
-  where: Prisma.ParkingAreaWhereUniqueInput
-  data: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutOperatorInput, Prisma.ParkingAreaUncheckedUpdateWithoutOperatorInput>
+export type ParkingAreaUpdateWithoutLeasesInput = {
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  authority?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slots?: Prisma.ParkingSlotUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUpdateManyWithoutParkingAreaNestedInput
 }
 
-export type ParkingAreaUpdateManyWithWhereWithoutOperatorInput = {
-  where: Prisma.ParkingAreaScalarWhereInput
-  data: Prisma.XOR<Prisma.ParkingAreaUpdateManyMutationInput, Prisma.ParkingAreaUncheckedUpdateManyWithoutOperatorInput>
+export type ParkingAreaUncheckedUpdateWithoutLeasesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  authority?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slots?: Prisma.ParkingSlotUncheckedUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUncheckedUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUncheckedUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedUpdateManyWithoutParkingAreaNestedInput
 }
 
-export type ParkingAreaScalarWhereInput = {
-  AND?: Prisma.ParkingAreaScalarWhereInput | Prisma.ParkingAreaScalarWhereInput[]
-  OR?: Prisma.ParkingAreaScalarWhereInput[]
-  NOT?: Prisma.ParkingAreaScalarWhereInput | Prisma.ParkingAreaScalarWhereInput[]
-  id?: Prisma.IntFilter<"ParkingArea"> | number
-  code?: Prisma.StringFilter<"ParkingArea"> | string
-  name?: Prisma.StringFilter<"ParkingArea"> | string
-  authority?: Prisma.StringFilter<"ParkingArea"> | string
-  workOrderNo?: Prisma.StringFilter<"ParkingArea"> | string
-  tenureStart?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  tenureEnd?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  areaSqft?: Prisma.IntFilter<"ParkingArea"> | number
-  slotValidity?: Prisma.IntFilter<"ParkingArea"> | number
-  latitude?: Prisma.DecimalFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFilter<"ParkingArea"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFilter<"ParkingArea"> | number
-  ward?: Prisma.StringNullableFilter<"ParkingArea"> | string | null
-  address?: Prisma.StringNullableFilter<"ParkingArea"> | string | null
-  openTime?: Prisma.DateTimeNullableFilter<"ParkingArea"> | Date | string | null
-  closeTime?: Prisma.DateTimeNullableFilter<"ParkingArea"> | Date | string | null
-  status?: Prisma.EnumAreaStatusFilter<"ParkingArea"> | $Enums.AreaStatus
-  createdAt?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ParkingArea"> | Date | string
-  operatorId?: Prisma.IntFilter<"ParkingArea"> | number
+export type ParkingAreaCreateWithoutOpeningHoursInput = {
+  code: string
+  name: string
+  authority?: string
+  address: string
+  ward?: string | null
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeCreateNestedManyWithoutParkingAreaInput
 }
 
-export type ParkingAreaCreateManyOperatorInput = {
+export type ParkingAreaUncheckedCreateWithoutOpeningHoursInput = {
   id?: number
   code: string
   name: string
   authority?: string
-  workOrderNo: string
-  tenureStart: Date | string
-  tenureEnd: Date | string
-  areaSqft: number
-  slotValidity: number
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity: number
+  address: string
   ward?: string | null
-  address?: string | null
-  openTime?: Date | string | null
-  closeTime?: Date | string | null
-  status?: $Enums.AreaStatus
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseUncheckedCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotUncheckedCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureUncheckedCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedCreateNestedManyWithoutParkingAreaInput
 }
 
-export type ParkingAreaUpdateWithoutOperatorInput = {
+export type ParkingAreaCreateOrConnectWithoutOpeningHoursInput = {
+  where: Prisma.ParkingAreaWhereUniqueInput
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOpeningHoursInput, Prisma.ParkingAreaUncheckedCreateWithoutOpeningHoursInput>
+}
+
+export type ParkingAreaUpsertWithoutOpeningHoursInput = {
+  update: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutOpeningHoursInput, Prisma.ParkingAreaUncheckedUpdateWithoutOpeningHoursInput>
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutOpeningHoursInput, Prisma.ParkingAreaUncheckedCreateWithoutOpeningHoursInput>
+  where?: Prisma.ParkingAreaWhereInput
+}
+
+export type ParkingAreaUpdateToOneWithWhereWithoutOpeningHoursInput = {
+  where?: Prisma.ParkingAreaWhereInput
+  data: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutOpeningHoursInput, Prisma.ParkingAreaUncheckedUpdateWithoutOpeningHoursInput>
+}
+
+export type ParkingAreaUpdateWithoutOpeningHoursInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   authority?: Prisma.StringFieldUpdateOperationsInput | string
-  workOrderNo?: Prisma.StringFieldUpdateOperationsInput | string
-  tenureStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenureEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  areaSqft?: Prisma.IntFieldUpdateOperationsInput | number
-  slotValidity?: Prisma.IntFieldUpdateOperationsInput | number
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFieldUpdateOperationsInput | number
+  address?: Prisma.StringFieldUpdateOperationsInput | string
   ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  closeTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumAreaStatusFieldUpdateOperationsInput | $Enums.AreaStatus
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUpdateManyWithoutParkingAreaNestedInput
 }
 
-export type ParkingAreaUncheckedUpdateWithoutOperatorInput = {
+export type ParkingAreaUncheckedUpdateWithoutOpeningHoursInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   authority?: Prisma.StringFieldUpdateOperationsInput | string
-  workOrderNo?: Prisma.StringFieldUpdateOperationsInput | string
-  tenureStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenureEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  areaSqft?: Prisma.IntFieldUpdateOperationsInput | number
-  slotValidity?: Prisma.IntFieldUpdateOperationsInput | number
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFieldUpdateOperationsInput | number
+  address?: Prisma.StringFieldUpdateOperationsInput | string
   ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  closeTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumAreaStatusFieldUpdateOperationsInput | $Enums.AreaStatus
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUncheckedUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUncheckedUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUncheckedUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedUpdateManyWithoutParkingAreaNestedInput
 }
 
-export type ParkingAreaUncheckedUpdateManyWithoutOperatorInput = {
+export type ParkingAreaCreateWithoutClosuresInput = {
+  code: string
+  name: string
+  authority?: string
+  address: string
+  ward?: string | null
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeCreateNestedManyWithoutParkingAreaInput
+}
+
+export type ParkingAreaUncheckedCreateWithoutClosuresInput = {
+  id?: number
+  code: string
+  name: string
+  authority?: string
+  address: string
+  ward?: string | null
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseUncheckedCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotUncheckedCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursUncheckedCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedCreateNestedManyWithoutParkingAreaInput
+}
+
+export type ParkingAreaCreateOrConnectWithoutClosuresInput = {
+  where: Prisma.ParkingAreaWhereUniqueInput
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutClosuresInput, Prisma.ParkingAreaUncheckedCreateWithoutClosuresInput>
+}
+
+export type ParkingAreaUpsertWithoutClosuresInput = {
+  update: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutClosuresInput, Prisma.ParkingAreaUncheckedUpdateWithoutClosuresInput>
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutClosuresInput, Prisma.ParkingAreaUncheckedCreateWithoutClosuresInput>
+  where?: Prisma.ParkingAreaWhereInput
+}
+
+export type ParkingAreaUpdateToOneWithWhereWithoutClosuresInput = {
+  where?: Prisma.ParkingAreaWhereInput
+  data: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutClosuresInput, Prisma.ParkingAreaUncheckedUpdateWithoutClosuresInput>
+}
+
+export type ParkingAreaUpdateWithoutClosuresInput = {
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  authority?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUpdateManyWithoutParkingAreaNestedInput
+}
+
+export type ParkingAreaUncheckedUpdateWithoutClosuresInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   authority?: Prisma.StringFieldUpdateOperationsInput | string
-  workOrderNo?: Prisma.StringFieldUpdateOperationsInput | string
-  tenureStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenureEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  areaSqft?: Prisma.IntFieldUpdateOperationsInput | number
-  slotValidity?: Prisma.IntFieldUpdateOperationsInput | number
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalCapacity?: Prisma.IntFieldUpdateOperationsInput | number
+  address?: Prisma.StringFieldUpdateOperationsInput | string
   ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  closeTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumAreaStatusFieldUpdateOperationsInput | $Enums.AreaStatus
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUncheckedUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUncheckedUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUncheckedUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedUpdateManyWithoutParkingAreaNestedInput
 }
 
+export type ParkingAreaCreateWithoutSlotsInput = {
+  code: string
+  name: string
+  authority?: string
+  address: string
+  ward?: string | null
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeCreateNestedManyWithoutParkingAreaInput
+}
+
+export type ParkingAreaUncheckedCreateWithoutSlotsInput = {
+  id?: number
+  code: string
+  name: string
+  authority?: string
+  address: string
+  ward?: string | null
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseUncheckedCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursUncheckedCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureUncheckedCreateNestedManyWithoutParkingAreaInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedCreateNestedManyWithoutParkingAreaInput
+}
+
+export type ParkingAreaCreateOrConnectWithoutSlotsInput = {
+  where: Prisma.ParkingAreaWhereUniqueInput
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutSlotsInput, Prisma.ParkingAreaUncheckedCreateWithoutSlotsInput>
+}
+
+export type ParkingAreaUpsertWithoutSlotsInput = {
+  update: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutSlotsInput, Prisma.ParkingAreaUncheckedUpdateWithoutSlotsInput>
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutSlotsInput, Prisma.ParkingAreaUncheckedCreateWithoutSlotsInput>
+  where?: Prisma.ParkingAreaWhereInput
+}
+
+export type ParkingAreaUpdateToOneWithWhereWithoutSlotsInput = {
+  where?: Prisma.ParkingAreaWhereInput
+  data: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutSlotsInput, Prisma.ParkingAreaUncheckedUpdateWithoutSlotsInput>
+}
+
+export type ParkingAreaUpdateWithoutSlotsInput = {
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  authority?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUpdateManyWithoutParkingAreaNestedInput
+}
+
+export type ParkingAreaUncheckedUpdateWithoutSlotsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  authority?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUncheckedUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUncheckedUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUncheckedUpdateManyWithoutParkingAreaNestedInput
+  qrCodes?: Prisma.SiteQrCodeUncheckedUpdateManyWithoutParkingAreaNestedInput
+}
+
+export type ParkingAreaCreateWithoutQrCodesInput = {
+  code: string
+  name: string
+  authority?: string
+  address: string
+  ward?: string | null
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureCreateNestedManyWithoutParkingAreaInput
+}
+
+export type ParkingAreaUncheckedCreateWithoutQrCodesInput = {
+  id?: number
+  code: string
+  name: string
+  authority?: string
+  address: string
+  ward?: string | null
+  areaSqft?: number | null
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: string
+  status?: $Enums.SiteStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  leases?: Prisma.ParkingLeaseUncheckedCreateNestedManyWithoutParkingAreaInput
+  slots?: Prisma.ParkingSlotUncheckedCreateNestedManyWithoutParkingAreaInput
+  openingHours?: Prisma.OpeningHoursUncheckedCreateNestedManyWithoutParkingAreaInput
+  closures?: Prisma.SiteClosureUncheckedCreateNestedManyWithoutParkingAreaInput
+}
+
+export type ParkingAreaCreateOrConnectWithoutQrCodesInput = {
+  where: Prisma.ParkingAreaWhereUniqueInput
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutQrCodesInput, Prisma.ParkingAreaUncheckedCreateWithoutQrCodesInput>
+}
+
+export type ParkingAreaUpsertWithoutQrCodesInput = {
+  update: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutQrCodesInput, Prisma.ParkingAreaUncheckedUpdateWithoutQrCodesInput>
+  create: Prisma.XOR<Prisma.ParkingAreaCreateWithoutQrCodesInput, Prisma.ParkingAreaUncheckedCreateWithoutQrCodesInput>
+  where?: Prisma.ParkingAreaWhereInput
+}
+
+export type ParkingAreaUpdateToOneWithWhereWithoutQrCodesInput = {
+  where?: Prisma.ParkingAreaWhereInput
+  data: Prisma.XOR<Prisma.ParkingAreaUpdateWithoutQrCodesInput, Prisma.ParkingAreaUncheckedUpdateWithoutQrCodesInput>
+}
+
+export type ParkingAreaUpdateWithoutQrCodesInput = {
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  authority?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUpdateManyWithoutParkingAreaNestedInput
+}
+
+export type ParkingAreaUncheckedUpdateWithoutQrCodesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  authority?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  ward?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqft?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leases?: Prisma.ParkingLeaseUncheckedUpdateManyWithoutParkingAreaNestedInput
+  slots?: Prisma.ParkingSlotUncheckedUpdateManyWithoutParkingAreaNestedInput
+  openingHours?: Prisma.OpeningHoursUncheckedUpdateManyWithoutParkingAreaNestedInput
+  closures?: Prisma.SiteClosureUncheckedUpdateManyWithoutParkingAreaNestedInput
+}
+
+
+/**
+ * Count Type ParkingAreaCountOutputType
+ */
+
+export type ParkingAreaCountOutputType = {
+  leases: number
+  slots: number
+  openingHours: number
+  closures: number
+  qrCodes: number
+}
+
+export type ParkingAreaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  leases?: boolean | ParkingAreaCountOutputTypeCountLeasesArgs
+  slots?: boolean | ParkingAreaCountOutputTypeCountSlotsArgs
+  openingHours?: boolean | ParkingAreaCountOutputTypeCountOpeningHoursArgs
+  closures?: boolean | ParkingAreaCountOutputTypeCountClosuresArgs
+  qrCodes?: boolean | ParkingAreaCountOutputTypeCountQrCodesArgs
+}
+
+/**
+ * ParkingAreaCountOutputType without action
+ */
+export type ParkingAreaCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ParkingAreaCountOutputType
+   */
+  select?: Prisma.ParkingAreaCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ParkingAreaCountOutputType without action
+ */
+export type ParkingAreaCountOutputTypeCountLeasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ParkingLeaseWhereInput
+}
+
+/**
+ * ParkingAreaCountOutputType without action
+ */
+export type ParkingAreaCountOutputTypeCountSlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ParkingSlotWhereInput
+}
+
+/**
+ * ParkingAreaCountOutputType without action
+ */
+export type ParkingAreaCountOutputTypeCountOpeningHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpeningHoursWhereInput
+}
+
+/**
+ * ParkingAreaCountOutputType without action
+ */
+export type ParkingAreaCountOutputTypeCountClosuresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SiteClosureWhereInput
+}
+
+/**
+ * ParkingAreaCountOutputType without action
+ */
+export type ParkingAreaCountOutputTypeCountQrCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SiteQrCodeWhereInput
+}
 
 
 export type ParkingAreaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -974,23 +1219,21 @@ export type ParkingAreaSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   code?: boolean
   name?: boolean
   authority?: boolean
-  workOrderNo?: boolean
-  tenureStart?: boolean
-  tenureEnd?: boolean
+  address?: boolean
+  ward?: boolean
   areaSqft?: boolean
-  slotValidity?: boolean
   latitude?: boolean
   longitude?: boolean
-  totalCapacity?: boolean
-  ward?: boolean
-  address?: boolean
-  openTime?: boolean
-  closeTime?: boolean
+  timezone?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  operatorId?: boolean
-  operator?: boolean | Prisma.ParkingOperatorDefaultArgs<ExtArgs>
+  leases?: boolean | Prisma.ParkingArea$leasesArgs<ExtArgs>
+  slots?: boolean | Prisma.ParkingArea$slotsArgs<ExtArgs>
+  openingHours?: boolean | Prisma.ParkingArea$openingHoursArgs<ExtArgs>
+  closures?: boolean | Prisma.ParkingArea$closuresArgs<ExtArgs>
+  qrCodes?: boolean | Prisma.ParkingArea$qrCodesArgs<ExtArgs>
+  _count?: boolean | Prisma.ParkingAreaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["parkingArea"]>
 
 
@@ -1000,55 +1243,50 @@ export type ParkingAreaSelectScalar = {
   code?: boolean
   name?: boolean
   authority?: boolean
-  workOrderNo?: boolean
-  tenureStart?: boolean
-  tenureEnd?: boolean
+  address?: boolean
+  ward?: boolean
   areaSqft?: boolean
-  slotValidity?: boolean
   latitude?: boolean
   longitude?: boolean
-  totalCapacity?: boolean
-  ward?: boolean
-  address?: boolean
-  openTime?: boolean
-  closeTime?: boolean
+  timezone?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  operatorId?: boolean
 }
 
-export type ParkingAreaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "authority" | "workOrderNo" | "tenureStart" | "tenureEnd" | "areaSqft" | "slotValidity" | "latitude" | "longitude" | "totalCapacity" | "ward" | "address" | "openTime" | "closeTime" | "status" | "createdAt" | "updatedAt" | "operatorId", ExtArgs["result"]["parkingArea"]>
+export type ParkingAreaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "authority" | "address" | "ward" | "areaSqft" | "latitude" | "longitude" | "timezone" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["parkingArea"]>
 export type ParkingAreaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  operator?: boolean | Prisma.ParkingOperatorDefaultArgs<ExtArgs>
+  leases?: boolean | Prisma.ParkingArea$leasesArgs<ExtArgs>
+  slots?: boolean | Prisma.ParkingArea$slotsArgs<ExtArgs>
+  openingHours?: boolean | Prisma.ParkingArea$openingHoursArgs<ExtArgs>
+  closures?: boolean | Prisma.ParkingArea$closuresArgs<ExtArgs>
+  qrCodes?: boolean | Prisma.ParkingArea$qrCodesArgs<ExtArgs>
+  _count?: boolean | Prisma.ParkingAreaCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $ParkingAreaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ParkingArea"
   objects: {
-    operator: Prisma.$ParkingOperatorPayload<ExtArgs>
+    leases: Prisma.$ParkingLeasePayload<ExtArgs>[]
+    slots: Prisma.$ParkingSlotPayload<ExtArgs>[]
+    openingHours: Prisma.$OpeningHoursPayload<ExtArgs>[]
+    closures: Prisma.$SiteClosurePayload<ExtArgs>[]
+    qrCodes: Prisma.$SiteQrCodePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     code: string
     name: string
     authority: string
-    workOrderNo: string
-    tenureStart: Date
-    tenureEnd: Date
-    areaSqft: number
-    slotValidity: number
-    latitude: runtime.Decimal
-    longitude: runtime.Decimal
-    totalCapacity: number
+    address: string
     ward: string | null
-    address: string | null
-    openTime: Date | null
-    closeTime: Date | null
-    status: $Enums.AreaStatus
+    areaSqft: number | null
+    latitude: runtime.Decimal | null
+    longitude: runtime.Decimal | null
+    timezone: string
+    status: $Enums.SiteStatus
     createdAt: Date
     updatedAt: Date
-    operatorId: number
   }, ExtArgs["result"]["parkingArea"]>
   composites: {}
 }
@@ -1389,7 +1627,11 @@ readonly fields: ParkingAreaFieldRefs;
  */
 export interface Prisma__ParkingAreaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  operator<T extends Prisma.ParkingOperatorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ParkingOperatorDefaultArgs<ExtArgs>>): Prisma.Prisma__ParkingOperatorClient<runtime.Types.Result.GetResult<Prisma.$ParkingOperatorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  leases<T extends Prisma.ParkingArea$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ParkingArea$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParkingLeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  slots<T extends Prisma.ParkingArea$slotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ParkingArea$slotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParkingSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  openingHours<T extends Prisma.ParkingArea$openingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ParkingArea$openingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpeningHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  closures<T extends Prisma.ParkingArea$closuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ParkingArea$closuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SiteClosurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qrCodes<T extends Prisma.ParkingArea$qrCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ParkingArea$qrCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SiteQrCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1423,22 +1665,15 @@ export interface ParkingAreaFieldRefs {
   readonly code: Prisma.FieldRef<"ParkingArea", 'String'>
   readonly name: Prisma.FieldRef<"ParkingArea", 'String'>
   readonly authority: Prisma.FieldRef<"ParkingArea", 'String'>
-  readonly workOrderNo: Prisma.FieldRef<"ParkingArea", 'String'>
-  readonly tenureStart: Prisma.FieldRef<"ParkingArea", 'DateTime'>
-  readonly tenureEnd: Prisma.FieldRef<"ParkingArea", 'DateTime'>
+  readonly address: Prisma.FieldRef<"ParkingArea", 'String'>
+  readonly ward: Prisma.FieldRef<"ParkingArea", 'String'>
   readonly areaSqft: Prisma.FieldRef<"ParkingArea", 'Int'>
-  readonly slotValidity: Prisma.FieldRef<"ParkingArea", 'Int'>
   readonly latitude: Prisma.FieldRef<"ParkingArea", 'Decimal'>
   readonly longitude: Prisma.FieldRef<"ParkingArea", 'Decimal'>
-  readonly totalCapacity: Prisma.FieldRef<"ParkingArea", 'Int'>
-  readonly ward: Prisma.FieldRef<"ParkingArea", 'String'>
-  readonly address: Prisma.FieldRef<"ParkingArea", 'String'>
-  readonly openTime: Prisma.FieldRef<"ParkingArea", 'DateTime'>
-  readonly closeTime: Prisma.FieldRef<"ParkingArea", 'DateTime'>
-  readonly status: Prisma.FieldRef<"ParkingArea", 'AreaStatus'>
+  readonly timezone: Prisma.FieldRef<"ParkingArea", 'String'>
+  readonly status: Prisma.FieldRef<"ParkingArea", 'SiteStatus'>
   readonly createdAt: Prisma.FieldRef<"ParkingArea", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ParkingArea", 'DateTime'>
-  readonly operatorId: Prisma.FieldRef<"ParkingArea", 'Int'>
 }
     
 
@@ -1784,6 +2019,126 @@ export type ParkingAreaDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many ParkingAreas to delete.
    */
   limit?: number
+}
+
+/**
+ * ParkingArea.leases
+ */
+export type ParkingArea$leasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ParkingLease
+   */
+  select?: Prisma.ParkingLeaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ParkingLease
+   */
+  omit?: Prisma.ParkingLeaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ParkingLeaseInclude<ExtArgs> | null
+  where?: Prisma.ParkingLeaseWhereInput
+  orderBy?: Prisma.ParkingLeaseOrderByWithRelationInput | Prisma.ParkingLeaseOrderByWithRelationInput[]
+  cursor?: Prisma.ParkingLeaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ParkingLeaseScalarFieldEnum | Prisma.ParkingLeaseScalarFieldEnum[]
+}
+
+/**
+ * ParkingArea.slots
+ */
+export type ParkingArea$slotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ParkingSlot
+   */
+  select?: Prisma.ParkingSlotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ParkingSlot
+   */
+  omit?: Prisma.ParkingSlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ParkingSlotInclude<ExtArgs> | null
+  where?: Prisma.ParkingSlotWhereInput
+  orderBy?: Prisma.ParkingSlotOrderByWithRelationInput | Prisma.ParkingSlotOrderByWithRelationInput[]
+  cursor?: Prisma.ParkingSlotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ParkingSlotScalarFieldEnum | Prisma.ParkingSlotScalarFieldEnum[]
+}
+
+/**
+ * ParkingArea.openingHours
+ */
+export type ParkingArea$openingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OpeningHours
+   */
+  select?: Prisma.OpeningHoursSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OpeningHours
+   */
+  omit?: Prisma.OpeningHoursOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpeningHoursInclude<ExtArgs> | null
+  where?: Prisma.OpeningHoursWhereInput
+  orderBy?: Prisma.OpeningHoursOrderByWithRelationInput | Prisma.OpeningHoursOrderByWithRelationInput[]
+  cursor?: Prisma.OpeningHoursWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpeningHoursScalarFieldEnum | Prisma.OpeningHoursScalarFieldEnum[]
+}
+
+/**
+ * ParkingArea.closures
+ */
+export type ParkingArea$closuresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SiteClosure
+   */
+  select?: Prisma.SiteClosureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SiteClosure
+   */
+  omit?: Prisma.SiteClosureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SiteClosureInclude<ExtArgs> | null
+  where?: Prisma.SiteClosureWhereInput
+  orderBy?: Prisma.SiteClosureOrderByWithRelationInput | Prisma.SiteClosureOrderByWithRelationInput[]
+  cursor?: Prisma.SiteClosureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SiteClosureScalarFieldEnum | Prisma.SiteClosureScalarFieldEnum[]
+}
+
+/**
+ * ParkingArea.qrCodes
+ */
+export type ParkingArea$qrCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SiteQrCode
+   */
+  select?: Prisma.SiteQrCodeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SiteQrCode
+   */
+  omit?: Prisma.SiteQrCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SiteQrCodeInclude<ExtArgs> | null
+  where?: Prisma.SiteQrCodeWhereInput
+  orderBy?: Prisma.SiteQrCodeOrderByWithRelationInput | Prisma.SiteQrCodeOrderByWithRelationInput[]
+  cursor?: Prisma.SiteQrCodeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SiteQrCodeScalarFieldEnum | Prisma.SiteQrCodeScalarFieldEnum[]
 }
 
 /**

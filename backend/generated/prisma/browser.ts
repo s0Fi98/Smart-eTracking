@@ -23,12 +23,82 @@ export * from './enums.ts';
  */
 export type User = Prisma.UserModel
 /**
- * Model ParkingOperator
+ * Model Organization
  * 
  */
-export type ParkingOperator = Prisma.ParkingOperatorModel
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model OrganizationMember
+ * 
+ */
+export type OrganizationMember = Prisma.OrganizationMemberModel
 /**
  * Model ParkingArea
  * 
  */
 export type ParkingArea = Prisma.ParkingAreaModel
+/**
+ * Model ParkingLease
+ * 
+ */
+export type ParkingLease = Prisma.ParkingLeaseModel
+/**
+ * Model SiteAssignment
+ * 
+ */
+export type SiteAssignment = Prisma.SiteAssignmentModel
+/**
+ * Model OpeningHours
+ * 
+ */
+export type OpeningHours = Prisma.OpeningHoursModel
+/**
+ * Model SiteClosure
+ * 
+ */
+export type SiteClosure = Prisma.SiteClosureModel
+/**
+ * Model ParkingSlot
+ * 
+ */
+export type ParkingSlot = Prisma.ParkingSlotModel
+/**
+ * Model SiteQrCode
+ * 
+ */
+export type SiteQrCode = Prisma.SiteQrCodeModel
+/**
+ * Model Vehicle
+ * 
+ */
+export type Vehicle = Prisma.VehicleModel
+/**
+ * Model PricePlan
+ * 
+ */
+export type PricePlan = Prisma.PricePlanModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model Refund
+ * 
+ */
+export type Refund = Prisma.RefundModel
+/**
+ * Model PaymentEvent
+ * 
+ */
+export type PaymentEvent = Prisma.PaymentEventModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

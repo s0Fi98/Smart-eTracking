@@ -9,38 +9,118 @@
 * 🟢 You can import this file directly.
 */
 
-export const UserRole = {
-  ADMIN: 'ADMIN',
-  GMC_OFFICER: 'GMC_OFFICER',
-  OPERATOR: 'OPERATOR',
-  TICKET_COLLECTOR: 'TICKET_COLLECTOR'
+export const PlatformRole = {
+  USER: 'USER',
+  SUPER_ADMIN: 'SUPER_ADMIN'
 } as const
 
-export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+export type PlatformRole = (typeof PlatformRole)[keyof typeof PlatformRole]
 
 
-export const UserStatus = {
+export const AccountStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   SUSPENDED: 'SUSPENDED'
 } as const
 
-export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+export type AccountStatus = (typeof AccountStatus)[keyof typeof AccountStatus]
 
 
-export const OperatorStatus = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  BLACKLISTED: 'BLACKLISTED'
+export const OrganizationRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  ACCOUNTANT: 'ACCOUNTANT',
+  VIEWER: 'VIEWER'
 } as const
 
-export type OperatorStatus = (typeof OperatorStatus)[keyof typeof OperatorStatus]
+export type OrganizationRole = (typeof OrganizationRole)[keyof typeof OrganizationRole]
 
 
-export const AreaStatus = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  UNDER_MAINTENANCE: 'UNDER_MAINTENANCE'
+export const SiteRole = {
+  MANAGER: 'MANAGER',
+  OPERATOR: 'OPERATOR',
+  TICKET_COLLECTOR: 'TICKET_COLLECTOR',
+  VIEWER: 'VIEWER'
 } as const
 
-export type AreaStatus = (typeof AreaStatus)[keyof typeof AreaStatus]
+export type SiteRole = (typeof SiteRole)[keyof typeof SiteRole]
+
+
+export const SiteStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  MAINTENANCE: 'MAINTENANCE'
+} as const
+
+export type SiteStatus = (typeof SiteStatus)[keyof typeof SiteStatus]
+
+
+export const LeaseStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  ENDED: 'ENDED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type LeaseStatus = (typeof LeaseStatus)[keyof typeof LeaseStatus]
+
+
+export const VehicleType = {
+  TWO_WHEELER: 'TWO_WHEELER',
+  THREE_WHEELER: 'THREE_WHEELER',
+  FOUR_WHEELER: 'FOUR_WHEELER',
+  HEAVY_VEHICLE: 'HEAVY_VEHICLE'
+} as const
+
+export type VehicleType = (typeof VehicleType)[keyof typeof VehicleType]
+
+
+export const SlotStatus = {
+  ACTIVE: 'ACTIVE',
+  OUT_OF_SERVICE: 'OUT_OF_SERVICE',
+  RETIRED: 'RETIRED'
+} as const
+
+export type SlotStatus = (typeof SlotStatus)[keyof typeof SlotStatus]
+
+
+export const BookingStatus = {
+  HELD: 'HELD',
+  CONFIRMED: 'CONFIRMED',
+  CHECKED_IN: 'CHECKED_IN',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  NO_SHOW: 'NO_SHOW'
+} as const
+
+export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PaymentMethod = {
+  UPI: 'UPI',
+  CARD: 'CARD',
+  NET_BANKING: 'NET_BANKING',
+  CASH: 'CASH'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const RefundStatus = {
+  PENDING: 'PENDING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED'
+} as const
+
+export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus]

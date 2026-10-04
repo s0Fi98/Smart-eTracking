@@ -52,8 +52,22 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  ParkingOperator: 'ParkingOperator',
-  ParkingArea: 'ParkingArea'
+  Organization: 'Organization',
+  OrganizationMember: 'OrganizationMember',
+  ParkingArea: 'ParkingArea',
+  ParkingLease: 'ParkingLease',
+  SiteAssignment: 'SiteAssignment',
+  OpeningHours: 'OpeningHours',
+  SiteClosure: 'SiteClosure',
+  ParkingSlot: 'ParkingSlot',
+  SiteQrCode: 'SiteQrCode',
+  Vehicle: 'Vehicle',
+  PricePlan: 'PricePlan',
+  Booking: 'Booking',
+  Payment: 'Payment',
+  Refund: 'Refund',
+  PaymentEvent: 'PaymentEvent',
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,26 +89,29 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
+  email: 'email',
+  phone: 'phone',
   passwordHash: 'passwordHash',
   name: 'name',
-  contact: 'contact',
-  email: 'email',
-  role: 'role',
+  platformRole: 'platformRole',
   status: 'status',
   lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  operatorId: 'operatorId'
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const ParkingOperatorScalarFieldEnum = {
+export const OrganizationScalarFieldEnum = {
   id: 'id',
+  code: 'code',
   name: 'name',
+  legalName: 'legalName',
+  registrationNumber: 'registrationNumber',
+  taxNumber: 'taxNumber',
   contactPerson: 'contactPerson',
-  contact: 'contact',
+  phone: 'phone',
   email: 'email',
   address: 'address',
   status: 'status',
@@ -102,7 +119,20 @@ export const ParkingOperatorScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ParkingOperatorScalarFieldEnum = (typeof ParkingOperatorScalarFieldEnum)[keyof typeof ParkingOperatorScalarFieldEnum]
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationMemberScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  role: 'role',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
 
 
 export const ParkingAreaScalarFieldEnum = {
@@ -110,25 +140,227 @@ export const ParkingAreaScalarFieldEnum = {
   code: 'code',
   name: 'name',
   authority: 'authority',
-  workOrderNo: 'workOrderNo',
-  tenureStart: 'tenureStart',
-  tenureEnd: 'tenureEnd',
+  address: 'address',
+  ward: 'ward',
   areaSqft: 'areaSqft',
-  slotValidity: 'slotValidity',
   latitude: 'latitude',
   longitude: 'longitude',
-  totalCapacity: 'totalCapacity',
-  ward: 'ward',
-  address: 'address',
-  openTime: 'openTime',
-  closeTime: 'closeTime',
+  timezone: 'timezone',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  operatorId: 'operatorId'
+  updatedAt: 'updatedAt'
 } as const
 
 export type ParkingAreaScalarFieldEnum = (typeof ParkingAreaScalarFieldEnum)[keyof typeof ParkingAreaScalarFieldEnum]
+
+
+export const ParkingLeaseScalarFieldEnum = {
+  id: 'id',
+  parkingAreaId: 'parkingAreaId',
+  organizationId: 'organizationId',
+  workOrderNo: 'workOrderNo',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ParkingLeaseScalarFieldEnum = (typeof ParkingLeaseScalarFieldEnum)[keyof typeof ParkingLeaseScalarFieldEnum]
+
+
+export const SiteAssignmentScalarFieldEnum = {
+  id: 'id',
+  memberId: 'memberId',
+  leaseId: 'leaseId',
+  role: 'role',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteAssignmentScalarFieldEnum = (typeof SiteAssignmentScalarFieldEnum)[keyof typeof SiteAssignmentScalarFieldEnum]
+
+
+export const OpeningHoursScalarFieldEnum = {
+  id: 'id',
+  parkingAreaId: 'parkingAreaId',
+  weekday: 'weekday',
+  opensMinute: 'opensMinute',
+  closesMinute: 'closesMinute'
+} as const
+
+export type OpeningHoursScalarFieldEnum = (typeof OpeningHoursScalarFieldEnum)[keyof typeof OpeningHoursScalarFieldEnum]
+
+
+export const SiteClosureScalarFieldEnum = {
+  id: 'id',
+  parkingAreaId: 'parkingAreaId',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  reason: 'reason'
+} as const
+
+export type SiteClosureScalarFieldEnum = (typeof SiteClosureScalarFieldEnum)[keyof typeof SiteClosureScalarFieldEnum]
+
+
+export const ParkingSlotScalarFieldEnum = {
+  id: 'id',
+  parkingAreaId: 'parkingAreaId',
+  code: 'code',
+  zone: 'zone',
+  floor: 'floor',
+  vehicleType: 'vehicleType',
+  isAccessible: 'isAccessible',
+  hasCharger: 'hasCharger',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ParkingSlotScalarFieldEnum = (typeof ParkingSlotScalarFieldEnum)[keyof typeof ParkingSlotScalarFieldEnum]
+
+
+export const SiteQrCodeScalarFieldEnum = {
+  id: 'id',
+  parkingAreaId: 'parkingAreaId',
+  token: 'token',
+  label: 'label',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SiteQrCodeScalarFieldEnum = (typeof SiteQrCodeScalarFieldEnum)[keyof typeof SiteQrCodeScalarFieldEnum]
+
+
+export const VehicleScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  registrationNumber: 'registrationNumber',
+  vehicleType: 'vehicleType',
+  createdAt: 'createdAt'
+} as const
+
+export type VehicleScalarFieldEnum = (typeof VehicleScalarFieldEnum)[keyof typeof VehicleScalarFieldEnum]
+
+
+export const PricePlanScalarFieldEnum = {
+  id: 'id',
+  leaseId: 'leaseId',
+  name: 'name',
+  vehicleType: 'vehicleType',
+  currency: 'currency',
+  durationMinutes: 'durationMinutes',
+  priceMinor: 'priceMinor',
+  graceMinutes: 'graceMinutes',
+  overtimeUnitMinutes: 'overtimeUnitMinutes',
+  overtimePriceMinor: 'overtimePriceMinor',
+  validFrom: 'validFrom',
+  validUntil: 'validUntil',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+} as const
+
+export type PricePlanScalarFieldEnum = (typeof PricePlanScalarFieldEnum)[keyof typeof PricePlanScalarFieldEnum]
+
+
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  reference: 'reference',
+  idempotencyKey: 'idempotencyKey',
+  userId: 'userId',
+  leaseId: 'leaseId',
+  slotId: 'slotId',
+  vehicleId: 'vehicleId',
+  pricePlanId: 'pricePlanId',
+  qrCodeId: 'qrCodeId',
+  vehicleRegistration: 'vehicleRegistration',
+  vehicleType: 'vehicleType',
+  status: 'status',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  holdExpiresAt: 'holdExpiresAt',
+  checkedInAt: 'checkedInAt',
+  checkedOutAt: 'checkedOutAt',
+  cancelledAt: 'cancelledAt',
+  cancellationReason: 'cancellationReason',
+  currency: 'currency',
+  subtotalMinor: 'subtotalMinor',
+  taxMinor: 'taxMinor',
+  discountMinor: 'discountMinor',
+  overtimeMinor: 'overtimeMinor',
+  totalMinor: 'totalMinor',
+  pricingSnapshot: 'pricingSnapshot',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  idempotencyKey: 'idempotencyKey',
+  provider: 'provider',
+  providerOrderId: 'providerOrderId',
+  providerPaymentId: 'providerPaymentId',
+  method: 'method',
+  status: 'status',
+  amountMinor: 'amountMinor',
+  currency: 'currency',
+  paidAt: 'paidAt',
+  failureReason: 'failureReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const RefundScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  idempotencyKey: 'idempotencyKey',
+  provider: 'provider',
+  providerRefundId: 'providerRefundId',
+  amountMinor: 'amountMinor',
+  reason: 'reason',
+  status: 'status',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof RefundScalarFieldEnum]
+
+
+export const PaymentEventScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  provider: 'provider',
+  providerEventId: 'providerEventId',
+  eventType: 'eventType',
+  payload: 'payload',
+  receivedAt: 'receivedAt',
+  processedAt: 'processedAt'
+} as const
+
+export type PaymentEventScalarFieldEnum = (typeof PaymentEventScalarFieldEnum)[keyof typeof PaymentEventScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -137,6 +369,21 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -149,34 +396,152 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 export const UserOrderByRelevanceFieldEnum = {
   username: 'username',
+  email: 'email',
+  phone: 'phone',
   passwordHash: 'passwordHash',
-  name: 'name',
-  contact: 'contact',
-  email: 'email'
+  name: 'name'
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
 
 
-export const ParkingOperatorOrderByRelevanceFieldEnum = {
+export const OrganizationOrderByRelevanceFieldEnum = {
+  code: 'code',
   name: 'name',
+  legalName: 'legalName',
+  registrationNumber: 'registrationNumber',
+  taxNumber: 'taxNumber',
   contactPerson: 'contactPerson',
-  contact: 'contact',
+  phone: 'phone',
   email: 'email',
   address: 'address'
 } as const
 
-export type ParkingOperatorOrderByRelevanceFieldEnum = (typeof ParkingOperatorOrderByRelevanceFieldEnum)[keyof typeof ParkingOperatorOrderByRelevanceFieldEnum]
+export type OrganizationOrderByRelevanceFieldEnum = (typeof OrganizationOrderByRelevanceFieldEnum)[keyof typeof OrganizationOrderByRelevanceFieldEnum]
 
 
 export const ParkingAreaOrderByRelevanceFieldEnum = {
   code: 'code',
   name: 'name',
   authority: 'authority',
-  workOrderNo: 'workOrderNo',
+  address: 'address',
   ward: 'ward',
-  address: 'address'
+  timezone: 'timezone'
 } as const
 
 export type ParkingAreaOrderByRelevanceFieldEnum = (typeof ParkingAreaOrderByRelevanceFieldEnum)[keyof typeof ParkingAreaOrderByRelevanceFieldEnum]
+
+
+export const ParkingLeaseOrderByRelevanceFieldEnum = {
+  workOrderNo: 'workOrderNo'
+} as const
+
+export type ParkingLeaseOrderByRelevanceFieldEnum = (typeof ParkingLeaseOrderByRelevanceFieldEnum)[keyof typeof ParkingLeaseOrderByRelevanceFieldEnum]
+
+
+export const SiteClosureOrderByRelevanceFieldEnum = {
+  reason: 'reason'
+} as const
+
+export type SiteClosureOrderByRelevanceFieldEnum = (typeof SiteClosureOrderByRelevanceFieldEnum)[keyof typeof SiteClosureOrderByRelevanceFieldEnum]
+
+
+export const ParkingSlotOrderByRelevanceFieldEnum = {
+  code: 'code',
+  zone: 'zone',
+  floor: 'floor'
+} as const
+
+export type ParkingSlotOrderByRelevanceFieldEnum = (typeof ParkingSlotOrderByRelevanceFieldEnum)[keyof typeof ParkingSlotOrderByRelevanceFieldEnum]
+
+
+export const SiteQrCodeOrderByRelevanceFieldEnum = {
+  token: 'token',
+  label: 'label'
+} as const
+
+export type SiteQrCodeOrderByRelevanceFieldEnum = (typeof SiteQrCodeOrderByRelevanceFieldEnum)[keyof typeof SiteQrCodeOrderByRelevanceFieldEnum]
+
+
+export const VehicleOrderByRelevanceFieldEnum = {
+  registrationNumber: 'registrationNumber'
+} as const
+
+export type VehicleOrderByRelevanceFieldEnum = (typeof VehicleOrderByRelevanceFieldEnum)[keyof typeof VehicleOrderByRelevanceFieldEnum]
+
+
+export const PricePlanOrderByRelevanceFieldEnum = {
+  name: 'name',
+  currency: 'currency'
+} as const
+
+export type PricePlanOrderByRelevanceFieldEnum = (typeof PricePlanOrderByRelevanceFieldEnum)[keyof typeof PricePlanOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const BookingOrderByRelevanceFieldEnum = {
+  reference: 'reference',
+  idempotencyKey: 'idempotencyKey',
+  vehicleRegistration: 'vehicleRegistration',
+  cancellationReason: 'cancellationReason',
+  currency: 'currency'
+} as const
+
+export type BookingOrderByRelevanceFieldEnum = (typeof BookingOrderByRelevanceFieldEnum)[keyof typeof BookingOrderByRelevanceFieldEnum]
+
+
+export const PaymentOrderByRelevanceFieldEnum = {
+  idempotencyKey: 'idempotencyKey',
+  provider: 'provider',
+  providerOrderId: 'providerOrderId',
+  providerPaymentId: 'providerPaymentId',
+  currency: 'currency',
+  failureReason: 'failureReason'
+} as const
+
+export type PaymentOrderByRelevanceFieldEnum = (typeof PaymentOrderByRelevanceFieldEnum)[keyof typeof PaymentOrderByRelevanceFieldEnum]
+
+
+export const RefundOrderByRelevanceFieldEnum = {
+  idempotencyKey: 'idempotencyKey',
+  provider: 'provider',
+  providerRefundId: 'providerRefundId',
+  reason: 'reason'
+} as const
+
+export type RefundOrderByRelevanceFieldEnum = (typeof RefundOrderByRelevanceFieldEnum)[keyof typeof RefundOrderByRelevanceFieldEnum]
+
+
+export const PaymentEventOrderByRelevanceFieldEnum = {
+  provider: 'provider',
+  providerEventId: 'providerEventId',
+  eventType: 'eventType'
+} as const
+
+export type PaymentEventOrderByRelevanceFieldEnum = (typeof PaymentEventOrderByRelevanceFieldEnum)[keyof typeof PaymentEventOrderByRelevanceFieldEnum]
+
+
+export const AuditLogOrderByRelevanceFieldEnum = {
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId'
+} as const
+
+export type AuditLogOrderByRelevanceFieldEnum = (typeof AuditLogOrderByRelevanceFieldEnum)[keyof typeof AuditLogOrderByRelevanceFieldEnum]
 
