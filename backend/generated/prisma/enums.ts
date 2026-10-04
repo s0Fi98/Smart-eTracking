@@ -27,6 +27,7 @@ export type AccountStatus = (typeof AccountStatus)[keyof typeof AccountStatus]
 
 
 export const OrganizationRole = {
+  MEMBER: 'MEMBER',
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',
   ACCOUNTANT: 'ACCOUNTANT',

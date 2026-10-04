@@ -135,18 +135,24 @@ export const resources = {
     title: "Users",
     singular: "user",
     description:
-      "Customers and staff accounts. Super administrators are provisioned securely using the backend CLI.",
+      "Create staff with an email and password, then grant a membership and site access. Only super administrators can edit existing shared accounts or reset passwords.",
     columns: ["name", "email", "phone", "platformRole", "status"],
     fields: [
       req("name", "Full name"),
+      field(
+        "organizationId",
+        "Organization (automatic MEMBER membership)",
+        "reference",
+        { source: "organizations", createOnly: true },
+      ),
       field("email", "Email", "email"),
       field("phone", "Phone"),
       field("username", "Username"),
       field(
         "password",
-        "Initial password (optional, minimum 12 characters)",
+        "Password (12+ characters; blank keeps current password)",
         "password",
-        { createOnly: true },
+        { createOnly: false },
       ),
       account(),
     ],
@@ -162,8 +168,8 @@ export const resources = {
       choice(
         "role",
         "Organization role",
-        ["OWNER", "ADMIN", "ACCOUNTANT", "VIEWER"],
-        { default: "VIEWER" },
+        ["MEMBER", "OWNER", "ADMIN", "ACCOUNTANT", "VIEWER"],
+        { default: "MEMBER" },
       ),
       account(),
     ],

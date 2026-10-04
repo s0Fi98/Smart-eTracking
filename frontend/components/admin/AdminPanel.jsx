@@ -8,6 +8,13 @@ import {
   display,
   label,
 } from "../../lib/admin/resources";
+import {
+  canView,
+  canCreate,
+  permittedFields,
+  navigationFor,
+  fieldOptions,
+} from "../../lib/admin/access";
 import { seedDemo, hydrate, demoOverview } from "../../lib/admin/demo";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const STORE = "gmc-parking-admin-demo-v1";
@@ -122,7 +129,11 @@ export default function AdminPanel() {
     [revision, setRevision] = useState(0),
     [modal, setModal] = useState(null),
     [saving, setSaving] = useState(false),
-    [formError, setFormError] = useState("");
+    [formError, setFormError] = useState(""),
+    [formScope, setFormScope] = useState({});
+  useEffect(() => {
+    setFormScope(modal?.record || {});
+  }, [modal]);
   useEffect(() => {
     const requested = new URLSearchParams(location.search).get("view");
     if (Object.hasOwn(resources, requested) || requested === "help")
@@ -189,7 +200,12 @@ export default function AdminPanel() {
       previous?.focus();
     };
   }, [mobile]);
+  const canRead = (name) => canView(user, mode, name);
+  const canAdd = (name) => canCreate(user, mode, name, resources[name]);
+  const fieldsFor = (record) =>
+    permittedFields(user, mode, view, resources[view], record);
   function navigate(next) {
+    if (!canRead(next)) next = "overview";
     setRevision((r) => r + 1);
     setData(null);
     setLoading(true);
@@ -234,6 +250,12 @@ export default function AdminPanel() {
   }, [db, mode]);
   useEffect(() => {
     if (!mode) return;
+    if (!canView(user, mode, view)) {
+      setData(null);
+      setView("overview");
+      history.replaceState(null, "", "?view=overview");
+      return;
+    }
     let cancelled = false;
     setLoading(true);
     setError("");
@@ -274,12 +296,14 @@ export default function AdminPanel() {
           if (!cancelled) {
             setData(result);
             setOptions(lookups);
+            if (lookups.access)
+              setUser((current) => ({ ...current, access: lookups.access }));
           }
         }
       } catch (e) {
         if (!cancelled) {
           setError(e.message);
-          if (e.status === 401) {
+          if (e.status === 401 || e.status === 403) {
             setMode(null);
             setUser(null);
           }
@@ -336,14 +360,9 @@ export default function AdminPanel() {
       const form = new FormData(e.currentTarget),
         body = {};
       const config = resources[view];
-      for (const f of config.fields.filter((f) =>
-        modal.record
-          ? !f.createOnly &&
-            !f.immutable &&
-            (!config.edit || config.edit.includes(f.key))
-          : !f.editOnly,
-      )) {
+      for (const f of fieldsFor(modal.record)) {
         const value = form.get(f.key);
+        if (f.key === "password" && !value) continue;
         if (f.type === "checkbox") body[f.key] = form.has(f.key);
         else if (value === "" || value === null) {
           if (modal.record) body[f.key] = null;
@@ -461,7 +480,7 @@ export default function AdminPanel() {
           </span>
         </section>
         <section className="login-form">
-          <p className="eyebrow">ADMINISTRATOR ACCESS</p>
+          <p className="eyebrow">STAFF ACCESS</p>
           <h2>Welcome back.</h2>
           <p>Sign in to manage your parking network.</p>
           {error && (
@@ -477,7 +496,7 @@ export default function AdminPanel() {
                 type="email"
                 autoComplete="username"
                 required
-                placeholder="admin@your-organization.in"
+                placeholder="staff@your-organization.in"
               />
             </label>
             <label>
@@ -506,7 +525,9 @@ export default function AdminPanel() {
             </button>
           </div>
           <small>
-            Super administrator accounts are created through the backend CLI.
+            Use your staff email and password. Your active organization role and
+            site assignments determine access. Ask your administrator if you
+            need an account.
           </small>
         </section>
       </main>
@@ -529,10 +550,15 @@ export default function AdminPanel() {
         <div className="workspace-label">
           <span className="live-dot" />{" "}
           {mode === "demo" ? "Demo workspace" : "Administration"}
-          <small>All organizations</small>
+          <small>
+            {mode === "demo" || user.access?.superAdmin
+              ? "All organizations"
+              : user.access?.organizations?.map((o) => o.name).join(" · ") ||
+                "Assigned sites"}
+          </small>
         </div>
         <nav aria-label="Administration">
-          {groups.map((g) => (
+          {navigationFor(groups, tabs, user, mode).map((g) => (
             <section key={g.label}>
               <p>{g.label}</p>
               {g.items.map(([key, name]) => (
@@ -562,7 +588,11 @@ export default function AdminPanel() {
           <span className="avatar">{user.name?.[0] || "A"}</span>
           <div>
             <b>{user.name}</b>
-            <small>Super administrator</small>
+            <small>
+              {mode === "demo"
+                ? "Super administrator"
+                : user.access?.label || "Staff"}
+            </small>
           </div>
           <button onClick={logout} title="Sign out" aria-label="Sign out">
             ↗
@@ -636,7 +666,7 @@ export default function AdminPanel() {
                     : "A shared picture of your parking network and the work that needs attention.")}
               </p>
             </div>
-            {config?.fields && (
+            {canAdd(view) && (
               <button
                 className="primary"
                 disabled={loading}
@@ -649,9 +679,11 @@ export default function AdminPanel() {
                 Add {config.singular}
               </button>
             )}
-            {view === "overview" && (
+            {view === "overview" && canRead("sites") && (
               <button className="primary" onClick={() => navigate("sites")}>
-                Manage parking areas
+                {mode === "demo" || user.access?.permissions?.sites?.update
+                  ? "Manage parking areas"
+                  : "View parking areas"}
                 <Icon name="arrow" />
               </button>
             )}
@@ -662,7 +694,7 @@ export default function AdminPanel() {
               role="navigation"
               aria-label="Related resources"
             >
-              {activeGroup[1].map((k) => (
+              {activeGroup[1].filter(canRead).map((k) => (
                 <button
                   key={k}
                   className={view === k ? "active" : ""}
@@ -705,7 +737,12 @@ export default function AdminPanel() {
           ) : view === "help" ? (
             <Help />
           ) : view === "overview" && data?.counts ? (
-            <Overview data={data} navigate={navigate} />
+            <Overview
+              data={data}
+              navigate={navigate}
+              canRead={canRead}
+              canAdd={canAdd}
+            />
           ) : config && Array.isArray(data?.items) ? (
             <>
               <div className="table-toolbar">
@@ -730,7 +767,9 @@ export default function AdminPanel() {
                 )}
                 <span>
                   {data.total} {data.total === 1 ? "record" : "records"}
-                  {!config.fields && " · Read only"}
+                  {!canAdd(view) &&
+                    !data.items.some((row) => fieldsFor(row).length) &&
+                    " · Read only"}
                 </span>
                 <button
                   className="text-button"
@@ -780,7 +819,7 @@ export default function AdminPanel() {
                             >
                               View
                             </button>
-                            {config.fields && (
+                            {fieldsFor(row).length > 0 && (
                               <button
                                 onClick={() => {
                                   setFormError("");
@@ -816,7 +855,7 @@ export default function AdminPanel() {
                     <p>
                       {search
                         ? "Try a different search term."
-                        : config.fields
+                        : canAdd(view)
                           ? "Add your first record to get started."
                           : "Records will appear here when the connected service records activity."}
                     </p>
@@ -881,100 +920,103 @@ export default function AdminPanel() {
                   and are stored in UTC.
                 </p>
                 <div className="form-grid">
-                  {config.fields
-                    .filter((f) =>
-                      modal.record
-                        ? !f.createOnly &&
-                          !f.immutable &&
-                          (!config.edit || config.edit.includes(f.key))
-                        : !f.editOnly,
-                    )
-                    .map((f) => {
-                      let value =
-                        modal.record?.[f.key] ??
-                        f.default ??
-                        (f.values?.[0] || "");
-                      if (f.type === "datetime-local" && value) {
-                        const date = new Date(value);
-                        date.setMinutes(
-                          date.getMinutes() - date.getTimezoneOffset(),
-                        );
-                        value = date.toISOString().slice(0, 16);
-                      }
-                      return (
-                        <label
-                          key={f.key}
-                          className={
-                            f.type === "checkbox" ? "checkbox-label" : ""
-                          }
-                        >
-                          {f.type === "checkbox" ? (
-                            <>
-                              <input
-                                type="checkbox"
-                                name={f.key}
-                                defaultChecked={!!value}
-                              />
-                              {f.label}
-                            </>
-                          ) : (
-                            <>
-                              {f.label}
-                              {f.required && " *"}
-                              {f.type === "select" || f.type === "reference" ? (
-                                <select
-                                  name={f.key}
-                                  defaultValue={value}
-                                  required={f.required}
-                                >
-                                  {f.type === "reference" && (
-                                    <option value="">
-                                      Select {f.label.toLowerCase()}
-                                    </option>
-                                  )}
-                                  {(f.values || options[f.source] || []).map(
-                                    (o) => (
-                                      <option key={o.id ?? o} value={o.id ?? o}>
-                                        {typeof o === "object"
-                                          ? `${display(o)}${o.organization?.name ? ` · ${o.organization.name}` : ""} (#${o.id})`
-                                          : display(o)}
-                                      </option>
-                                    ),
-                                  )}
-                                </select>
-                              ) : (
-                                <input
-                                  name={f.key}
-                                  type={
-                                    f.type === "money" || f.type === "decimal"
-                                      ? "text"
-                                      : f.type
-                                  }
-                                  defaultValue={value}
-                                  required={f.required}
-                                  min={f.type === "number" ? 0 : undefined}
-                                  step={f.type === "number" ? 1 : undefined}
-                                  pattern={
-                                    f.type === "money" ? "[0-9]+" : undefined
-                                  }
-                                  inputMode={
-                                    f.type === "money" ? "numeric" : undefined
-                                  }
-                                  minLength={
-                                    f.type === "password" ? 12 : undefined
-                                  }
-                                  autoComplete={
-                                    f.type === "password"
-                                      ? "new-password"
-                                      : undefined
-                                  }
-                                />
-                              )}
-                            </>
-                          )}
-                        </label>
+                  {fieldsFor(modal.record).map((f) => {
+                    let value =
+                      (f.type === "password" ? "" : modal.record?.[f.key]) ??
+                      f.default ??
+                      (f.values?.[0] || "");
+                    if (f.type === "datetime-local" && value) {
+                      const date = new Date(value);
+                      date.setMinutes(
+                        date.getMinutes() - date.getTimezoneOffset(),
                       );
-                    })}
+                      value = date.toISOString().slice(0, 16);
+                    }
+                    return (
+                      <label
+                        key={f.key}
+                        className={
+                          f.type === "checkbox" ? "checkbox-label" : ""
+                        }
+                      >
+                        {f.type === "checkbox" ? (
+                          <>
+                            <input
+                              type="checkbox"
+                              name={f.key}
+                              defaultChecked={!!value}
+                            />
+                            {f.label}
+                          </>
+                        ) : (
+                          <>
+                            {f.label}
+                            {f.required && " *"}
+                            {f.type === "select" || f.type === "reference" ? (
+                              <select
+                                name={f.key}
+                                defaultValue={value}
+                                required={f.required}
+                                onChange={(event) =>
+                                  setFormScope((current) => ({
+                                    ...current,
+                                    [f.key]: event.target.value,
+                                  }))
+                                }
+                              >
+                                {f.type === "reference" && (
+                                  <option value="">
+                                    Select {f.label.toLowerCase()}
+                                  </option>
+                                )}
+                                {fieldOptions(
+                                  user,
+                                  mode,
+                                  view,
+                                  f,
+                                  options,
+                                  modal.record || formScope,
+                                ).map((o) => (
+                                  <option key={o.id ?? o} value={o.id ?? o}>
+                                    {typeof o === "object"
+                                      ? `${display(o)}${o.organization?.name ? ` · ${o.organization.name}` : ""} (#${o.id})`
+                                      : display(o)}
+                                  </option>
+                                ))}
+                              </select>
+                            ) : (
+                              <input
+                                name={f.key}
+                                type={
+                                  f.type === "money" || f.type === "decimal"
+                                    ? "text"
+                                    : f.type
+                                }
+                                defaultValue={value}
+                                required={f.required}
+                                min={f.type === "number" ? 0 : undefined}
+                                step={f.type === "number" ? 1 : undefined}
+                                pattern={
+                                  f.type === "money" ? "[0-9]+" : undefined
+                                }
+                                inputMode={
+                                  f.type === "money" ? "numeric" : undefined
+                                }
+                                minLength={
+                                  f.type === "password" ? 12 : undefined
+                                }
+                                autoComplete={
+                                  f.type === "password"
+                                    ? "new-password"
+                                    : undefined
+                                }
+                              />
+                            )}
+                          </>
+                        )}
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
               <div className="modal-footer">
@@ -997,7 +1039,9 @@ export default function AdminPanel() {
             <div className="modal-content">
               <dl className="record-details">
                 {Object.entries(modal.record)
-                  .filter(([key]) => key !== "passwordHash")
+                  .filter(
+                    ([key]) => key !== "passwordHash" && key !== "_access",
+                  )
                   .map(([key, value]) => (
                     <div key={key}>
                       <dt>{label(key)}</dt>
@@ -1018,7 +1062,7 @@ export default function AdminPanel() {
     </div>
   );
 }
-function Overview({ data, navigate }) {
+function Overview({ data, navigate, canRead, canAdd }) {
   const c = data.counts;
   const occupancy = c.slots ? Math.round((c.occupied / c.slots) * 100) : 0;
   return (
@@ -1043,24 +1087,38 @@ function Overview({ data, navigate }) {
           <small>{c.occupied} currently checked in</small>
         </div>
         <div>
-          <span>Successful collections</span>
+          <span>
+            {canRead("payments")
+              ? "Successful collections"
+              : "Recorded bookings"}
+          </span>
           <strong className="money-stat">
-            {data.revenue.length
-              ? data.revenue.map((r) => (
-                  <span key={r.currency}>
-                    {r.currency} {display(r.amountMinor, "amountMinor")}
-                  </span>
-                ))
-              : "—"}
+            {!canRead("payments")
+              ? c.bookings
+              : data.revenue.length
+                ? data.revenue.map((r) => (
+                    <span key={r.currency}>
+                      {r.currency} {display(r.amountMinor, "amountMinor")}
+                    </span>
+                  ))
+                : "—"}
           </strong>
-          <small>All time · before refunds</small>
+          <small>
+            {canRead("payments")
+              ? "All time · before refunds"
+              : "Within your access scope"}
+          </small>
         </div>
       </div>
       <div className="overview-columns">
         <section className="network-section">
           <div className="section-heading">
             <h2>Your parking network</h2>
-            <button onClick={() => navigate("sites")}>View all areas ↗</button>
+            {canRead("sites") && (
+              <button onClick={() => navigate("sites")}>
+                View all areas ↗
+              </button>
+            )}
           </div>
           {data.sites.length ? (
             data.sites.map((site, i) => (
@@ -1100,38 +1158,48 @@ function Overview({ data, navigate }) {
             ))
           ) : (
             <div className="empty-state">
-              <h3>Build your parking network</h3>
-              <p>Add an organization, then register your first parking area.</p>
-              <button
-                className="primary"
-                onClick={() => navigate("organizations")}
-              >
-                Start with an organization
-              </button>
+              <h3>No active parking areas in your scope</h3>
+              <p>
+                {canAdd("organizations")
+                  ? "Add an organization, then register your first parking area."
+                  : "Ask your administrator to check your operating leases and site assignments."}
+              </p>
+              {canAdd("organizations") && (
+                <button
+                  className="primary"
+                  onClick={() => navigate("organizations")}
+                >
+                  Start with an organization
+                </button>
+              )}
             </div>
           )}
         </section>
         <aside className="attention-panel">
           <p className="eyebrow">KEEP THINGS MOVING</p>
           <h2>Needs attention</h2>
-          <button onClick={() => navigate("payments")}>
-            <span className="attention-number">{c.pendingPayments}</span>
-            <div>
-              <b>Pending payments</b>
-              <p>Review collection history</p>
-            </div>
-            <span>↗</span>
-          </button>
-          <button onClick={() => navigate("leases")}>
-            <span className="attention-number">
-              {data.expiringLeases.length}
-            </span>
-            <div>
-              <b>Expiring leases</b>
-              <p>Upcoming renewals</p>
-            </div>
-            <span>↗</span>
-          </button>
+          {canRead("payments") && (
+            <button onClick={() => navigate("payments")}>
+              <span className="attention-number">{c.pendingPayments}</span>
+              <div>
+                <b>Pending payments</b>
+                <p>Review collection history</p>
+              </div>
+              <span>↗</span>
+            </button>
+          )}
+          {canRead("leases") && (
+            <button onClick={() => navigate("leases")}>
+              <span className="attention-number">
+                {data.expiringLeases.length}
+              </span>
+              <div>
+                <b>Expiring leases</b>
+                <p>Upcoming renewals</p>
+              </div>
+              <span>↗</span>
+            </button>
+          )}
           <div className="attention-note">
             <b>A place for every detail.</b>
             <p>
@@ -1150,7 +1218,11 @@ function Overview({ data, navigate }) {
             <h2>Recent bookings</h2>
             <p>{c.bookings} bookings recorded across your network</p>
           </div>
-          <button onClick={() => navigate("bookings")}>View bookings ↗</button>
+          {canRead("bookings") && (
+            <button onClick={() => navigate("bookings")}>
+              View bookings ↗
+            </button>
+          )}
         </div>
         <div className="table-wrap">
           <table>
@@ -1263,8 +1335,8 @@ function Help() {
         </h2>
         <p>
           Use the sequence below to establish a parking operation. Super
-          administrators can inspect every organization and service; staff roles
-          are stored separately for future operational access.
+          administrators can inspect every organization and service; staff see
+          only the organizations and sites granted by their active roles.
         </p>
       </section>
       <ol className="help-steps">
@@ -1287,7 +1359,7 @@ function Help() {
           ],
           [
             "Give your team the right roles",
-            "Create users, add organization memberships, then assign members to leases within that same organization. SUPER_ADMIN is provisioned through the backend CLI.",
+            "Create staff with an email and password. Use MEMBER for site-only staff, then assign a MANAGER, OPERATOR, TICKET_COLLECTOR or VIEWER role on an active lease. Organization OWNER, ADMIN, ACCOUNTANT and VIEWER grant organization-wide access. Everyone uses this same sign-in page.",
           ],
           [
             "Publish the site QR code",

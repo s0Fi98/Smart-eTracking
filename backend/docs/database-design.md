@@ -31,7 +31,7 @@ erDiagram
   Payment |o--o{ PaymentEvent : receives
 ```
 
-## Access policy to implement
+## Access policy
 
 | Scope | Role | Intended access |
 | --- | --- | --- |
@@ -39,13 +39,14 @@ erDiagram
 | Platform | USER | Own profile, vehicles, bookings, and receipts |
 | Organization | OWNER / ADMIN | Manage their organization, memberships, leased sites, and reports |
 | Organization | ACCOUNTANT | Financial reports and authorized refund operations for their organization |
-| Organization | VIEWER | Read-only organization reports; no operational writes |
+| Organization | VIEWER | Read-only organization operational records; no financial ledgers |
+| Organization | MEMBER | Basic staff membership; operational access requires site assignments |
 | Site lease | MANAGER | Assigned site operations, pricing, and staff assignments within their authority |
 | Site lease | OPERATOR | Assigned site bookings, entry, exit, and occupancy |
 | Site lease | TICKET_COLLECTOR | Assigned site tickets and authorized collections |
 | Site lease | VIEWER | Assigned site read-only operations |
 
-These enums store roles; they do not enforce authorization. Every API must check active user/membership/assignment status and scope. Organization roles and site roles are separate grants. Use minimal organization VIEWER membership for operational staff, and restrict that role's report fields as needed. Only trusted platform administration may grant SUPER_ADMIN; registration must always default to USER. No seeded superuser credentials are included.
+The role-aware admin API now enforces these scopes; see [staff-access.md](staff-access.md). Organization roles and site roles are separate grants. Use MEMBER membership for operational staff and add site assignments. Booking/payment write services are still pending; operators and collectors currently have scoped read access. Only trusted platform administration may grant SUPER_ADMIN; registration must always default to USER. No seeded superuser credentials are included.
 
 ## Booking, time, and pricing
 
@@ -89,6 +90,6 @@ Before applying it to an existing database:
 3. Map user contacts, resolve duplicate normalized phone/email values, create memberships/site assignments, and explicitly review ADMIN/GMC_OFFICER access. Do not automatically promote legacy ADMIN accounts to SUPER_ADMIN.
 4. Create individual slot records from verified capacity and vehicle allocations. Convert old slot validity/rates into price plans; no authoritative pricing table exists in the old schema.
 5. Use the new protected `/api/admin/resources` setup APIs for organizations, sites, leases and assignments. Legacy `/api/operators` and `/api/parking-areas` endpoints now return 410; their previous `ticketCollector` relation was absent from the old schema. Use site assignments instead.
-6. Super-admin authentication and setup authorization are implemented. Add scoped staff access, booking/payment services, gateway verification, and database transactional integration tests. Replace the frontend mock registry/local booking flow with those APIs. The Prisma client has been regenerated; apply the migration in staging and verify backfilled counts and behavior before production.
+6. Platform and scoped staff authentication/setup authorization are implemented. Add booking/payment services, gateway verification, and database transactional integration tests. Replace the frontend mock registry/local booking flow with those APIs. The Prisma client has been regenerated; apply the migration in staging and verify backfilled counts and behavior before production.
 
 Validation performed for this phase: Prisma schema formatting and validation. No database was modified, no migration was applied, and runtime booking/payment behavior has not yet been implemented or tested.

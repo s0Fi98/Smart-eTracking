@@ -79,3 +79,7 @@ npx prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script -
 This is a one-time initial-schema generation command, not the command to use for future changes or against an existing schema. Do not overwrite the migration after applying it.
 
 Reference: [Prisma 7 shadow database documentation](https://www.prisma.io/docs/orm/v7/prisma-migrate/understanding-prisma-migrate/shadow-database).
+
+## Staff role access update
+
+`20261004010000_staff_access` adds the MEMBER organization role and narrows old VIEWER memberships with site assignments to site-only access. On an already initialized database, review it and run `npm run db:deploy`, then `npm run db:generate` and restart the backend. See [staff-access.md](staff-access.md) before assigning staff roles.

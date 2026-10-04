@@ -80,12 +80,12 @@ test('HTTP authentication, origin checks, audit writes and read-only financial h
 });
 
 test('ordinary users cannot sign into administration', async t => {
-  const db = { user: { findUnique: async () => ({ id: 2, status: 'ACTIVE', platformRole: 'USER', passwordHash: await hashPassword('ordinary user password') }) } };
+  const db = { organizationMember: { findMany: async () => [] }, user: { findUnique: async () => ({ id: 2, status: 'ACTIVE', platformRole: 'USER', passwordHash: await hashPassword('ordinary user password') }) } };
   const server = createApp(db, { origins: [origin], auth: { secret } }).listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
   t.after(() => new Promise(resolve => server.close(resolve)));
   const response = await fetch(`http://127.0.0.1:${server.address().port}/api/admin/login`, { method: 'POST', headers: { origin, 'content-type': 'application/json' }, body: JSON.stringify({ email: 'user@example.test', password: 'ordinary user password' }) });
-  assert.equal(response.status, 401);
+  assert.equal(response.status, 403);
 });
 
 test('public QR discovery serializes prices exactly and rejects revoked or inactive sites', async t => {

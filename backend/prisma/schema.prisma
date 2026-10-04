@@ -19,6 +19,7 @@ enum AccountStatus {
 }
 
 enum OrganizationRole {
+  MEMBER
   OWNER
   ADMIN
   ACCOUNTANT
@@ -132,7 +133,7 @@ model OrganizationMember {
   id             Int              @id @default(autoincrement())
   organizationId Int              @map("organization_id")
   userId         Int              @map("user_id")
-  role           OrganizationRole @default(VIEWER)
+  role           OrganizationRole @default(MEMBER)
   status         AccountStatus    @default(ACTIVE)
   createdAt      DateTime         @default(now()) @map("created_at") @db.DateTime(3)
   updatedAt      DateTime         @updatedAt @map("updated_at") @db.DateTime(3)

@@ -2,13 +2,15 @@
 
 The administration console lives at **`/dashboard/`**. It follows the Prisma structure in `backend/prisma/schema.prisma`: organizations lease physical parking sites, sites contain slots, and staff receive organization memberships and site assignments.
 
+For staff login and permissions, see [staff-access.md](staff-access.md).
+
 Preview: [desktop screenshot](images/admin-desktop.png) · [mobile screenshot](images/admin-mobile.png).
 
 The console has two explicit modes:
 
 | Mode | What it does |
 | --- | --- |
-| Live | Authenticates an active SUPER_ADMIN, reads MySQL through the Express API, saves setup changes, and records audit entries. Requires database setup below. |
+| Live | Authenticates active platform administrators and authorized organization/site staff, reads MySQL through the Express API, saves setup changes, and records audit entries. Requires database setup below. |
 | Demo | Uses sample Guwahati parking data stored only in this browser's local storage. No database connection, account, gateway or real payment is involved. |
 
 ## 1. Explore immediately
@@ -71,7 +73,7 @@ From `backend/`, run:
 npm run admin:create
 ```
 
-The command hashes the password with scrypt, creates an active SUPER_ADMIN, and writes a bootstrap audit entry. It refuses to overwrite or promote an existing email. Remove `ADMIN_PASSWORD` from the environment/file after provisioning. The user-management screen cannot grant SUPER_ADMIN or reset passwords; trusted server provisioning is the current mechanism for creating additional platform administrators. There is no password-recovery UI in this release.
+The command hashes the password with scrypt, creates an active SUPER_ADMIN, and writes a bootstrap audit entry. It refuses to overwrite or promote an existing email. Remove `ADMIN_PASSWORD` from the environment/file after provisioning. The user-management screen cannot grant SUPER_ADMIN. A super administrator can reset an existing user password through Users → Edit; trusted server provisioning is the current mechanism for creating additional platform administrators. There is no password-recovery UI in this release.
 
 ## 4. Start and sign in
 
@@ -86,9 +88,9 @@ In another terminal, start the frontend as above. By default the frontend calls 
 
 Open **http://localhost:3000/dashboard/** and sign in with the provisioned administrator email/password. Use the same host spelling on both sides: `localhost` with `localhost`, or `127.0.0.1` with `127.0.0.1`. Mixed hosts can prevent the browser from sending the session cookie.
 
-Live access is currently for SUPER_ADMIN only. Organization and site roles can be configured and viewed, but separate staff portals and their scoped permissions are not implemented in this release.
+All staff use the same sign-in page. SUPER_ADMIN has platform-wide access; active organization roles and site assignments grant scoped access. See [staff-access.md](staff-access.md) for the role matrix and account-setup steps.
 
-Sessions last eight hours. An HttpOnly cookie carries the signed session; credentials are not stored in localStorage. Sign out clears the browser cookie. Each request rechecks the user's active status and platform role. Password-hash changes or rotating the signing secret invalidate existing sessions. Ten unsuccessful attempts per client IP are allowed per 15-minute window; this limiter is process-local, so multi-instance deployments should provide shared rate limiting at their ingress.
+Sessions last eight hours. An HttpOnly cookie carries the signed session; credentials are not stored in localStorage. Sign out clears the browser cookie. Each request rechecks the user's active status, memberships, organization status, assignments and lease dates. Password-hash changes or rotating the signing secret invalidate existing sessions. Ten unsuccessful attempts per client IP are allowed per 15-minute window; this limiter is process-local, so multi-instance deployments should provide shared rate limiting at their ingress.
 
 ## 5. Set up a parking operation
 
@@ -101,9 +103,9 @@ Follow this order so that relationship selectors contain the right records.
 5. **Hours & closures → Opening hours.** Add each opening period using the site's local clock. Monday is 0, Sunday is 6. 08:00 = 480; 20:00 = 1200. For 24-hour operation use 0–1440 for each day. Split 22:00–02:00 into 1320–1440 on the first day and 0–120 on the next. Overlapping periods are rejected. The current panel supports adding/editing periods, not deleting them; correcting a schedule with fewer periods requires a reviewed maintenance change.
 6. **Hours & closures → Site closures.** Add date/time intervals for maintenance and exceptional closures. End must follow start. Scheduling is stored for the future booking service to enforce; the public scan view currently reports site information and inventory, not a bookability guarantee.
 7. **Pricing plans → Add pricing plan.** Select the lease, vehicle type, duration, price, grace time and overtime unit/rate. Money inputs are integer **paise**: 2,000 = ₹20; 4,000 = ₹40. New tariffs use INR. Validity must fit within the lease. To change terms, create a new plan and deactivate the old one; only the active flag can be edited on an existing tariff. Already sold bookings keep their pricing snapshot.
-8. **People & access → Users.** Add staff/customer identities. At least one email, phone or username is required. Optional initial passwords must be 12–256 characters; USER accounts still cannot enter this super-admin console.
-9. **People & access → Organization roles.** Select a user and organization; choose OWNER, ADMIN, ACCOUNTANT or VIEWER. The default is VIEWER. This records scoped access for future staff services, not platform access.
-10. **People & access → Site operators.** Select a membership and a lease of the same organization; choose MANAGER, OPERATOR, TICKET_COLLECTOR or VIEWER. Cross-organization assignments are rejected.
+8. **People & access → Users.** Add staff/customer identities. At least one email, phone or username is required. For staff login, provide an email and a 12–256-character password. Selecting an organization automatically creates a MEMBER membership. Organization administrators must select an organization they manage.
+9. **People & access → Organization roles.** Select a user and organization; choose OWNER, ADMIN, ACCOUNTANT or VIEWER for organization-wide access, or MEMBER for site-only staff. MEMBER is the default. Only owners/super administrators can appoint organization owners/admins.
+10. **People & access → Site operators.** Select a membership and a lease of the same organization; choose MANAGER, OPERATOR, TICKET_COLLECTOR or VIEWER. Cross-organization assignments are rejected. An active MEMBER can sign in once assigned to a current ACTIVE lease.
 11. **QR codes → Add QR code.** Select a site, label the code and optionally set expiry. Choose the row's **QR** action to preview, copy its link or download SVG. Use a frontend host reachable by customers before downloading a live sign: the link uses the current frontend origin. A localhost QR is useful only on the development machine.
 
 To revoke a QR, edit it and set **Revoked at**. Revocation is permanent; create a replacement code instead of clearing that timestamp. The preview flags expired/revoked codes. Demo QR codes are explicitly marked and cannot resolve to live sites.
@@ -145,7 +147,7 @@ The new authenticated resource API replaces legacy `/api/operators` and `/api/pa
 | --- | --- |
 | Cannot connect | Backend running on configured port; correct build-time API URL; correct allowed frontend origin. |
 | Authentication not configured | `ADMIN_SESSION_SECRET` has at least 32 random characters; restart backend after environment edits. |
-| Invalid administrator email/password | Bootstrap completed, email correct, password correct, user active and SUPER_ADMIN. Regular staff cannot log in here. |
+| Invalid staff email/password or no access | Check email/password and active user status; verify an active organization role or MEMBER plus a current site assignment. |
 | Sign-in works but next request is unauthorized | Same host/site on frontend and API; HTTPS in production; browser cookies allowed. |
 | Schema not ready/out of date | Apply the reviewed migration, regenerate Prisma client, restart API. |
 | Duplicate record | Organization/site code, user identifier, slot code, membership, assignment or work-order uniqueness conflict. |
