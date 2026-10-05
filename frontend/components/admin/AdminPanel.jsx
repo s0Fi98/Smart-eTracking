@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import CashCheckout from "./CashCheckout";
 import { QRCodeSVG } from "qrcode.react";
 import {
   resources,
@@ -768,6 +769,7 @@ export default function AdminPanel() {
                 <span>
                   {data.total} {data.total === 1 ? "record" : "records"}
                   {!canAdd(view) &&
+                    view !== "bookings" &&
                     !data.items.some((row) => fieldsFor(row).length) &&
                     " · Read only"}
                 </span>
@@ -812,6 +814,25 @@ export default function AdminPanel() {
                         ))}
                         <td>
                           <div className="row-actions">
+                            {view === "bookings" &&
+                              mode !== "demo" &&
+                              row.status === "CHECKED_IN" &&
+                              (user?.access?.superAdmin ||
+                                user?.access?.managedOrganizationIds?.includes(
+                                  row.lease?.organizationId,
+                                ) ||
+                                user?.access?.assignments?.some(
+                                  (a) =>
+                                    a.leaseId === row.leaseId &&
+                                    ["MANAGER", "TICKET_COLLECTOR"].includes(
+                                      a.role,
+                                    ),
+                                )) && (
+                                <CashCheckout
+                                  reference={row.reference}
+                                  onComplete={() => setRevision((r) => r + 1)}
+                                />
+                              )}
                             <button
                               onClick={() =>
                                 setModal({ type: "detail", record: row })
@@ -1384,7 +1405,8 @@ function Help() {
         <p>
           Form dates and displayed timestamps use your browser timezone; the
           service stores UTC. Opening hours are interpreted in each parking
-          area’s timezone. Finance and bookings are read only. Demo mode saves
+          area’s timezone. Authorized staff can record cash checkout from Bookings.
+          Financial history cannot be edited directly. Demo mode saves
           only sample changes in this browser.
         </p>
       </div>

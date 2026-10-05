@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 // In-memory Prisma test double: resolves actual relationships and evaluates
 // filters independently so HTTP tests can assert which tenant records escape.
 const now = Date.now();
@@ -160,6 +161,7 @@ export function staffDb(passwordHash) {
       members: ["organizationMember", "organizationId"],
     },
     parkingArea: {
+      qrCodes: ["siteQrCode", "parkingAreaId"],
       leases: ["parkingLease", "parkingAreaId"],
       slots: ["parkingSlot", "parkingAreaId"],
     },
@@ -183,6 +185,7 @@ export function staffDb(passwordHash) {
     },
     pricePlan: { lease: ["parkingLease", "id", "leaseId"] },
     booking: {
+      qrCode: ["siteQrCode", "id", "qrCodeId"],
       lease: ["parkingLease", "id", "leaseId"],
       user: ["user", "id", "userId"],
       slot: ["parkingSlot", "id", "slotId"],
@@ -293,6 +296,9 @@ export function staffDb(passwordHash) {
       create: async (args) => {
         const row = {
           id: Math.max(0, ...rows[model].map((r) => r.id)) + 1,
+          ...(model === "booking"
+            ? { reference: randomUUID(), taxMinor: 0n, discountMinor: 0n }
+            : {}),
           status: "ACTIVE",
           platformRole: "USER",
           ...args.data,

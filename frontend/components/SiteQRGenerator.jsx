@@ -9,7 +9,8 @@ export default function SiteQRGenerator({ site, originUrl }) {
 
   // Clean URL safe encoding
   const safeId = encodeURIComponent(site.id);
-  const targetUrl = `${originUrl}/lot/${safeId}`;
+  const targetPath = `/scan/?token=${encodeURIComponent(site.token)}`;
+  const targetUrl = `${originUrl}${targetPath}`;
 
   const handleDownloadCard = () => {
     const svgElement = document.getElementById(`qr-svg-${safeId}`);
@@ -60,7 +61,9 @@ export default function SiteQRGenerator({ site, originUrl }) {
 
     // 6. Draw QR Code SVG
     const svgData = new XMLSerializer().serializeToString(svgElement);
-    const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+    const svgBlob = new Blob([svgData], {
+      type: "image/svg+xml;charset=utf-8",
+    });
     const URL = window.URL || window.webkitURL || window;
     const blobURL = URL.createObjectURL(svgBlob);
 
@@ -101,7 +104,11 @@ export default function SiteQRGenerator({ site, originUrl }) {
       ctx.fillText(`${site.totalCapacity} slots`, width - 40, 575);
 
       ctx.fillStyle = "#334155";
-      ctx.fillText(site.ticketCollector || "Municipal Marshal", width - 40, 615);
+      ctx.fillText(
+        site.ticketCollector || "Municipal Marshal",
+        width - 40,
+        615,
+      );
 
       // Logo on Top
       const logoImg = new window.Image();
@@ -138,7 +145,6 @@ export default function SiteQRGenerator({ site, originUrl }) {
 
   return (
     <div className="bg-white rounded-3xl p-5 border-2 border-slate-200 shadow-md hover:shadow-xl hover:border-emerald-600 transition flex flex-col justify-between text-center break-inside-avoid page-break-inside-avoid">
-      
       {/* Target Standee Section */}
       <div className="bg-white p-2 rounded-2xl flex flex-col items-center w-full">
         {/* GMC Circular Emblem */}
@@ -159,7 +165,10 @@ export default function SiteQRGenerator({ site, originUrl }) {
         </span>
 
         {/* Site Name & ID */}
-        <h3 className="font-extrabold text-slate-900 text-sm mt-2 line-clamp-1 w-full px-1" title={site.name}>
+        <h3
+          className="font-extrabold text-slate-900 text-sm mt-2 line-clamp-1 w-full px-1"
+          title={site.name}
+        >
           {site.name}
         </h3>
         <p className="text-[11px] text-slate-400 font-mono mt-0.5 truncate max-w-[220px]">
@@ -181,11 +190,15 @@ export default function SiteQRGenerator({ site, originUrl }) {
         <div className="w-full text-[11px] text-slate-500 space-y-1 border-t border-slate-100 pt-2 text-left">
           <div className="flex justify-between">
             <span>Capacity:</span>
-            <strong className="text-slate-800">{site.totalCapacity} slots</strong>
+            <strong className="text-slate-800">
+              {site.totalCapacity} slots
+            </strong>
           </div>
           <div className="flex justify-between">
             <span>Lessee Name:</span>
-            <strong className="text-slate-700 truncate max-w-[130px]">{site.ticketCollector}</strong>
+            <strong className="text-slate-700 truncate max-w-[130px]">
+              {site.ticketCollector}
+            </strong>
           </div>
         </div>
       </div>
@@ -193,7 +206,7 @@ export default function SiteQRGenerator({ site, originUrl }) {
       {/* Action Buttons */}
       <div className="w-full mt-3 grid grid-cols-2 gap-2 print:hidden">
         <a
-          href={`/lot/${safeId}`}
+          href={targetPath}
           target="_blank"
           rel="noopener noreferrer"
           className="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold py-2.5 rounded-xl shadow-xs transition flex items-center justify-center"
@@ -222,7 +235,6 @@ export default function SiteQRGenerator({ site, originUrl }) {
           Download QR
         </button>
       </div>
-
     </div>
   );
 }

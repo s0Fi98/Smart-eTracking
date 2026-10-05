@@ -1,4 +1,5 @@
 import express from 'express';
+import { createParkingRouter, createCashRouter } from './parking/router.js';
 import cors from 'cors';
 import { createAdminRouter } from './admin/router.js';
 import { HttpError, assert } from './admin/validation.js';
@@ -15,6 +16,8 @@ export function createApp(prisma, options = {}) {
     next();
   });
   app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+  app.use('/api/parking', createParkingRouter(prisma));
+  app.use('/api/admin/cash', createCashRouter(prisma, options.auth));
   app.use('/api/admin', createAdminRouter(prisma, options.auth));
   // Old unauthenticated management endpoints must not bypass admin authorization.
   app.use(['/api/operators', '/api/parking-areas'], (req, res) => res.status(410).json({ message: 'Use the authenticated /api/admin/resources endpoints.' }));
@@ -28,7 +31,7 @@ export function createApp(prisma, options = {}) {
     assert(lease, 'This site does not have an active operating lease.', 404);
     const [slotsAvailable, plans] = await Promise.all([
       prisma.parkingSlot.count({ where: { parkingAreaId: qr.parkingAreaId, status: 'ACTIVE', bookings: { none: { OR: [{ status: 'CHECKED_IN' }, { status: 'CONFIRMED', startsAt: { lte: now }, endsAt: { gt: now } }, { status: 'HELD', startsAt: { lte: now }, endsAt: { gt: now }, holdExpiresAt: { gt: now } }] } } } }),
-      prisma.pricePlan.findMany({ where: { leaseId: lease.id, isActive: true, validFrom: { lte: now }, OR: [{ validUntil: null }, { validUntil: { gt: now } }] }, select: { name: true, durationMinutes: true, priceMinor: true, currency: true, vehicleType: true } }),
+      prisma.pricePlan.findMany({ where: { leaseId: lease.id, isActive: true, validFrom: { lte: now }, OR: [{ validUntil: null }, { validUntil: { gt: now } }] }, select: { id: true, graceMinutes: true, overtimeUnitMinutes: true, overtimePriceMinor: true, name: true, durationMinutes: true, priceMinor: true, currency: true, vehicleType: true } }),
     ]);
     const { code, name, address, timezone } = qr.parkingArea;
     res.json({ site: { code, name, address, timezone }, slotsAvailable, plans });

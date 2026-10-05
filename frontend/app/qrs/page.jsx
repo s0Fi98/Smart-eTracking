@@ -2,17 +2,30 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import SiteQRGenerator from "../../components/SiteQRGenerator";
-import { SITES_REGISTRY } from "../../lib/mock-data";
+
 import Image from "next/image";
 
 const page = () => {
   const [origin, setOrigin] = useState("");
   const [search, setSearch] = useState("");
-  const sites = Object.values(SITES_REGISTRY);
+  const [sites, setSites] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setOrigin(window.location.origin);
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/parking/sites`,
+        { signal: AbortSignal.timeout(15000) },
+      )
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.message);
+          setSites(data.sites);
+        })
+        .catch((e) => setError(e.message || "Unable to load parking sites."))
+        .finally(() => setLoading(false));
     }
   }, []);
 
@@ -95,7 +108,8 @@ const page = () => {
         <div className="max-w-7xl mx-auto mt-8">
           <div className="flex justify-between items-center text-xs text-slate-400 mb-5 print:hidden">
             <span>
-              Displaying <strong>{filteredSites.length}</strong> of 100
+              Displaying <strong>{filteredSites.length}</strong> of{" "}
+              {sites.length}
               Registered Locations
             </span>
             <span className="text-emerald-400 font-mono text-[11px]">
@@ -103,13 +117,21 @@ const page = () => {
             </span>
           </div>
 
+          {error && (
+            <p role="alert" className="mb-5 text-red-300">
+              {error}
+            </p>
+          )}
+          {loading && <p role="status">Loading live parking sites…</p>}
+          {!loading && !error && !filteredSites.length && (
+            <p>
+              No matching live sites. Configure an active site, lease and QR
+              code in the admin panel.
+            </p>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 print:grid-cols-2 print:gap-4">
             {filteredSites.map((site) => (
-              <SiteQRGenerator
-                key={site.id}
-                site={site}
-                originUrl={origin || "http://gmcsmartparking.com"}
-              />
+              <SiteQRGenerator key={site.id} site={site} originUrl={origin} />
             ))}
           </div>
         </div>

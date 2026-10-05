@@ -168,3 +168,7 @@ Core endpoints:
 - `GET /api/qr/:token` for limited public site discovery.
 
 Writes require a session cookie and an allowed `Origin` header. Allowed resource names and exact field allowlists are in `backend/admin/resources.js`. Password hashes never appear in API user records. Monetary values serialize as decimal minor-unit strings to preserve precision. No endpoint accepts a client-selected Prisma model or arbitrary nested update object.
+
+## QR entry and cash checkout
+
+See [QR parking workflow](qr-parking.md) for customer entry, private ticket recovery, and staff cash collection from the Bookings table. Booking and payment records remain protected from generic editing; cash checkout uses a separate authorized transaction.
